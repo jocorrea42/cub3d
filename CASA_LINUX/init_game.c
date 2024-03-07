@@ -6,7 +6,7 @@
 /*   By: anyela <anyela@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 10:01:55 by anyela            #+#    #+#             */
-/*   Updated: 2024/02/28 10:04:44 by anyela           ###   ########.fr       */
+/*   Updated: 2024/03/06 12:57:24 by anyela           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,14 @@ void start_the_game(t_data *dt) // start the game
  mlx.ply = calloc(1, sizeof(t_player)); // init the player structure i'm using calloc to initialize the variables to zero
  mlx.ray = calloc(1, sizeof(t_ray)); // init the ray structure
  mlx.img = new_program(S_W, S_H, "CUB3D");
+ mlx.tex = new_file_img("redbrick.xpm", mlx.img);
+ 
+ mlx_put_image_to_window (mlx.tex.mlx_ptr, mlx.tex.win_ptr, mlx.tex.img_ptr, 0, 0);
  init_the_player(mlx); // init the player structure
  mlx_loop_hook(mlx.img.mlx_ptr, &game_loop, &mlx); // game loop continuously call a specified function to update the game state and render the frames.
  mlx_hook(mlx.img.win_ptr, 2, 1L<<0, read_keys, &mlx);
  mlx_hook(mlx.img.win_ptr, 17, 0, exit_win, &mlx.img);
+ printf("text.h=%d, text.w=%d\n", mlx.tex.h, mlx.tex.w);
  mlx_loop(mlx.img.mlx_ptr); // mlx loop
  ft_exit(&mlx); // exit the game
 }

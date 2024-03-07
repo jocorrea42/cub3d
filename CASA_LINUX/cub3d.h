@@ -6,7 +6,7 @@
 /*   By: anyela <anyela@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:13:53 by jocorrea          #+#    #+#             */
-/*   Updated: 2024/02/28 10:03:41 by anyela           ###   ########.fr       */
+/*   Updated: 2024/03/06 12:34:40 by anyela           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,37 @@
 # include <stdlib.h>
 # include <string.h>
 # include <math.h>
+# include <fcntl.h>
 
 # define PI 3.14159265
 # define W 800
 # define S_W 800				 // screen width
 # define S_H 600				 // screen height
-# define TILE_SIZE 128		 // tile size
-# define FOV 61				 // field of view
+# define TILE_SIZE 64	 // tile size
+# define FOV 70			 // field of view
 # define ROTATION_SPEED 0.045 // rotation speed
 # define PLAYER_SPEED 16		 // player speed
+#define texWidth 64
+#define texHeight 64
+#define mapWidth 25
+#define mapHeight 9
+
+
+/*typedef struct s_tex
+{
+	mlx_texture_t	*no;
+	mlx_texture_t	*so;
+	mlx_texture_t	*we;
+	mlx_texture_t	*ea;
+}	t_tex;
+
+typedef struct s_txtr
+{
+	char			*key;
+	char			*value;
+	struct s_txtr	*next;
+}	t_txtr;
+*/
 
 typedef struct s_player // the player structure
 {
@@ -45,8 +67,14 @@ typedef struct s_player // the player structure
 typedef struct s_ray // the ray structure
 {
 	int		flag;		 // flag for the wall
+	int		index;
 	double	ray_angle;	 // ray angle
 	double	distance; // distance to the wall
+	double	horiz_x;
+	double	horiz_y;
+	double	vert_x;
+	double	vert_y;
+	
 }			t_ray;
 
 typedef struct s_data // the data structure
@@ -78,6 +106,8 @@ typedef struct s_cub // the mlx structure
 	t_ray		*ray;	   // the ray structure
 	t_data		*dt;	   // the data structure
 	t_player	*ply; // the player structure
+    t_img		tex;
+	//t_txtr		*l_ture;
 }				t_cub;
 
 typedef struct s_square
@@ -106,4 +136,7 @@ void		move_player(t_cub *mlx, double move_x, double move_y);
 void		rotate_player(t_cub *mlx, int i);
 t_data		*init_argumet();
 void		start_the_game(t_data *dt);
+
+t_img			new_file_img(char * path, t_img window);
+unsigned int	get_pixel_img(t_img img, int x, int y);
 #endif

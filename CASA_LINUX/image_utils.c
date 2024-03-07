@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   image_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anyela <anyela@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/28 09:43:43 by anyela            #+#    #+#             */
-/*   Updated: 2024/02/28 10:27:37 by anyela           ###   ########.fr       */
+/*   Created: 2024/02/28 09:47:19 by anyela            #+#    #+#             */
+/*   Updated: 2024/02/28 09:50:00 by anyela           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+t_img	new_file_img(char * path, t_img img) {
 
-int	r_angle(int angle)
-{
-	return ((angle * W) / 60);
+
+	img.img_ptr = mlx_xpm_file_to_image(img.mlx_ptr, path, &img.w, &img.h);
+	if (!img.img_ptr)
+		write(2, "File could not be read\n", 23);
+	else
+		img.addr = mlx_get_data_addr(img.img_ptr, &(img.bpp), &(img.l_len), &(img.endian));
+	return (img);
 }
 
-double	fcos(int angle)
+unsigned int	get_pixel_img(t_img img, int x, int y)
 {
-	static double	fcos[360 * W / 60];
-	int		i;
-
-	if (fcos[r_angle(0)] > 1.0)
-		return (fcos[angle]);
-	i = 0;
-	while (i < r_angle(360))
-	{
-		fcos[i] = cos(i * PI / r_angle(180)) + 0.1;
-		i++;
-	}
-	return (fcos[angle]);
+	return (*(unsigned int *)((img.addr
+			+ (y * img.l_len) + (x * img.bpp / 8))));
 }
