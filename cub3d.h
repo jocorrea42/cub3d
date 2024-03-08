@@ -23,7 +23,7 @@
 # include <fcntl.h>
 
 # define PI 3.14159265
-# define W 800
+//# define W 800
 # define S_W 800				 // screen width
 # define S_H 600				 // screen height
 # define TILE_SIZE 64	 // tile size
@@ -35,22 +35,20 @@
 #define mapWidth 25
 #define mapHeight 9
 
+//We will need to know where the player is pointing to in the begining of the game.
+# define E 0
+# define W PI
+# define S PI/2
+# define N -PI/2
 
-/*typedef struct s_tex
-{
-	mlx_texture_t	*no;
-	mlx_texture_t	*so;
-	mlx_texture_t	*we;
-	mlx_texture_t	*ea;
-}	t_tex;
 
-typedef struct s_txtr
+/* typedef struct s_txtr
 {
 	char			*key;
 	char			*value;
 	struct s_txtr	*next;
 }	t_txtr;
-*/
+ */
 
 typedef struct s_player // the player structure
 {
@@ -81,6 +79,7 @@ typedef struct s_data // the data structure
 {
 	int		p_x;	  // player x position in the map
 	int		p_y;	  // player y position in the map
+	double	p_a;	//player initial angle
 	int		w_map;	  // map width
 	int		h_map;	  // map height
 	char	**map2d; // the map
@@ -100,13 +99,26 @@ typedef struct s_img
 	char	*addr;
 }			t_img;
 
+
+
+typedef struct s_tex
+{
+	t_img	north;
+	t_img	south;
+	t_img	west;
+	t_img	east;
+	int		floor;
+	int		ceiling;
+}	t_tex;
+
 typedef struct s_cub // the mlx structure
 {
 	t_img		img;	   // the image
 	t_ray		*ray;	   // the ray structure
 	t_data		*dt;	   // the data structure
 	t_player	*ply; // the player structure
-    t_img		tex;
+	t_tex		*textures;
+    //t_img		tex;
 	//t_txtr		*l_ture;
 }				t_cub;
 
@@ -139,4 +151,5 @@ void		start_the_game(t_data *dt);
 
 t_img			new_file_img(char * path, t_img window);
 unsigned int	get_pixel_img(t_img img, int x, int y);
+
 #endif

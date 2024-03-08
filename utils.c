@@ -15,12 +15,12 @@
 
 int	r_angle(int angle)
 {
-	return ((angle * W) / 60);
+	return ((angle * S_W) / 60);
 }
 
 double	fcos(int angle)
 {
-	static double	fcos[360 * W / 60];
+	static double	fcos[360 * S_W / 60];
 	int		i;
 
 	if (fcos[r_angle(0)] > 1.0)

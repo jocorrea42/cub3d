@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-t_data *init_argumet() // init the data structure
+t_data *init_argumet(void) // init the data structure
 {
  t_data *dt = ft_calloc(1, sizeof(t_data)); // init the data structure
  dt->map2d = ft_calloc(10, sizeof(char *)); // init the map
@@ -27,7 +27,8 @@ t_data *init_argumet() // init the data structure
  dt->map2d[8] = strdup("1111111111111111111111111");
  dt->map2d[9] = NULL;
  dt->p_y = 3; // player y position in the map
- dt->p_x = 14; // player x position in the map
+ dt->p_x = 14; // player' x position in the map
+ dt->p_a = N; //player initial angle
  dt->w_map = 25; // map width
  dt->h_map = 9; // map height
  return (dt); // return the data structure
@@ -38,7 +39,7 @@ void init_the_player(t_cub mlx) // init the player structure
  mlx.ply->plyr_x = mlx.dt->p_x * TILE_SIZE + TILE_SIZE / 2; // player x position in pixels in the center of the tile
  mlx.ply->plyr_y = mlx.dt->p_y * TILE_SIZE + TILE_SIZE / 2; // player y position in pixels in the center of the tile
  mlx.ply->fov_rd = (FOV * PI) / 180; // field of view in radians
- mlx.ply->angle = PI/2 + 0.5; // player angle
+ mlx.ply->angle = mlx.dt->p_a; // player angle
  //the rest of the variables are initialized to zero by calloc
 }
 
@@ -69,15 +70,21 @@ void start_the_game(t_data *dt) // start the game
  mlx.ply = calloc(1, sizeof(t_player)); // init the player structure i'm using calloc to initialize the variables to zero
  mlx.ray = calloc(1, sizeof(t_ray)); // init the ray structure
  mlx.img = new_program(S_W, S_H, "CUB3D");
- mlx.tex = new_file_img("redbrick.xpm", mlx.img);
+ mlx.textures = ft_calloc(1, sizeof(t_tex));
+ mlx.textures->north = new_file_img("north.xpm", mlx.img);
+ mlx.textures->south = new_file_img("south.xpm", mlx.img);
+ mlx.textures->west = new_file_img("west.xpm", mlx.img);
+ mlx.textures->east = new_file_img("east.xpm", mlx.img);
+ mlx.textures->ceiling = 0x00BFFF;
+ mlx.textures->floor = 0x3C302A;
  
- mlx_put_image_to_window (mlx.tex.mlx_ptr, mlx.tex.win_ptr, mlx.tex.img_ptr, 0, 0);
+ //mlx_put_image_to_window (mlx.tex.mlx_ptr, mlx.tex.win_ptr, mlx.tex.img_ptr, 0, 0);
  init_the_player(mlx); // init the player structure
  draw_image(&mlx);
  mlx_loop_hook(mlx.img.mlx_ptr, &game_loop, &mlx); // game loop continuously call a specified function to update the game state and render the frames.
  mlx_hook(mlx.img.win_ptr, 2, 1L<<0, read_keys, &mlx);
  mlx_hook(mlx.img.win_ptr, 17, 0, exit_win, &mlx.img);
- printf("text.h=%d, text.w=%d\n", mlx.tex.h, mlx.tex.w);
+ //printf("text.h=%d, text.w=%d\n", mlx.tex.h, mlx.tex.w);
  mlx_loop(mlx.img.mlx_ptr); // mlx loop
  ft_exit(&mlx); // exit the game
 }
