@@ -1,53 +1,55 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/05/05 10:23:35 by jocorrea          #+#    #+#              #
-#    Updated: 2024/02/24 16:31:46 by jocorrea         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
-SRCS =	main.c win.c
-
-OBJS = $(SRCS:.c=.o)
-
-CC = gcc
-
-RM = rm -f
-
-CFLAGS = -Wall -Wextra -Werror -MMD
-
-INCLUDE = -Icub3d.h ./libft/libft.a ./mlx/libmlx.a -framework OpenGL -framework AppKit -framework Cocoa -framework Foundation
-
 NAME = cub3d
 
-DEPS= $(OBJS:.o=.d)
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -MMD
 
-# Metodo implicito
-%.o: %.c $(INCLUDE)
-	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+# External libraries
+ft = libft/libft.a
+mlx = mlx/libmlx.a  
 
+# Folders
+SRC_DIR = src
+OBJ_DIR = obj
+DEP_DIR = dep
+INC_DIR = inc
 
-# Mis metodos
-all: $(NAME)
+# Source files
+SRC = image_utils.c init_game.c key_event.c main.c move_event.c raycast.c square.c utils.c win.c
 
--include $(DEPS)
-$(NAME): $(OBJS)
-	@ make bonus -C ./libft
-	@ make -C ./mlx
-	$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) -o $(NAME)
+# Object files
+OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
+DEP = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.d))
+
+# Compile SRC files and move to folders
+$(OBJ_DIR)/%.o : %.c cub3d.h
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -Imlx -Ilibft -O3 -c $< -o $@
+	@mkdir -p $(DEP_DIR)
+	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/
+
+all: lib libmlx $(NAME)
+
+$(NAME): $(OBJ) $(ft) $(mlx)
+	$(CC) $(OBJ) -Llibft -lft -Lmlx -lmlx -L/usr/lib -Imlx -lXext -lX11 -lm -lz -o $(NAME)
+	@echo "cub3d compiled!"
+
+lib: 
+	make -C libft
+
+libmlx:
+	make -C mlx
 
 clean:
-	@ make clean -C ./libft
-	@ make clean -C ./mlx
-	@$(RM) $(OBJS) $(DEPS)
+	rm -rf $(OBJ_DIR) $(DEP_DIR)
+	make clean -C libft
 
-fclean: clean
-	@$(RM) $(NAME)
+fclean:
+	rm -rf $(NAME) $(OBJ_DIR) $(DEP_DIR)
+	make fclean -C libft
+	make clean -C mlx	
 
-re: fclean $(NAME)
+re:	fclean all
 
-.PHONY: all clean fclean re
+-include $(DEP)
+
+.PHONY: all re clean fclean

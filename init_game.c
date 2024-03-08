@@ -42,16 +42,22 @@ void init_the_player(t_cub mlx) // init the player structure
  //the rest of the variables are initialized to zero by calloc
 }
 
+void    draw_image(t_cub *mlx)
+{
+    mlx_destroy_image(mlx->img.mlx_ptr, mlx->img.img_ptr); // delete the image
+    mlx->img.img_ptr = mlx_new_image(mlx->img.mlx_ptr, S_W, S_H); // create new image
+    hook(mlx, 0, 0); // hook the player
+    cast_rays(mlx); // cast the rays
+    mlx_put_image_to_window(mlx->img.mlx_ptr, mlx->img.win_ptr, mlx->img.img_ptr, 0, 0); // put the image to the window
+}
+
 int game_loop(void *ml) // game loop
 {
  t_cub *mlx;
 
  mlx = ml; // cast to the mlx structure
- mlx_destroy_image(mlx->img.mlx_ptr, mlx->img.img_ptr); // delete the image
- mlx->img.img_ptr = mlx_new_image(mlx->img.mlx_ptr, S_W, S_H); // create new image
- hook(mlx, 0, 0); // hook the player
- cast_rays(mlx); // cast the rays
- mlx_put_image_to_window(mlx->img.mlx_ptr, mlx->img.win_ptr, mlx->img.img_ptr, 0, 0); // put the image to the window
+ if (mlx->ply->l_r || mlx->ply->u_d || mlx->ply->rot) // check if player moved. If not does not draw another image
+    draw_image(mlx);
  return (0);
 }
 
@@ -67,6 +73,7 @@ void start_the_game(t_data *dt) // start the game
  
  mlx_put_image_to_window (mlx.tex.mlx_ptr, mlx.tex.win_ptr, mlx.tex.img_ptr, 0, 0);
  init_the_player(mlx); // init the player structure
+ draw_image(&mlx);
  mlx_loop_hook(mlx.img.mlx_ptr, &game_loop, &mlx); // game loop continuously call a specified function to update the game state and render the frames.
  mlx_hook(mlx.img.win_ptr, 2, 1L<<0, read_keys, &mlx);
  mlx_hook(mlx.img.win_ptr, 17, 0, exit_win, &mlx.img);

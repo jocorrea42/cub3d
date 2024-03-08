@@ -14,12 +14,13 @@
 
 t_img	new_file_img(char * path, t_img img) {
 
-
+	int a;
 	img.img_ptr = mlx_xpm_file_to_image(img.mlx_ptr, path, &img.w, &img.h);
 	if (!img.img_ptr)
-		write(2, "File could not be read\n", 23);
+		a = write(2, "File could not be read\n", 23);
 	else
 		img.addr = mlx_get_data_addr(img.img_ptr, &(img.bpp), &(img.l_len), &(img.endian));
+	(void)a;
 	return (img);
 }
 
