@@ -12,33 +12,13 @@
 
 #include "cub3d.h"
 
-/*
-int main(void)
-{
- 	t_cub t;
-
-	t.img = new_program(600, 500, "animations");
-	if (!t.img.win_ptr)
-		return (2);
-	{
-		// Put image 
-		t_img	tloz_img;
-		tloz_img = new_file_img("img.xpm", t.img);
-		if (!tloz_img.img_ptr)
-			return (1);
-		mlx_put_image_to_window (tloz_img.mlx_ptr, tloz_img.win_ptr, tloz_img.img_ptr, 0, 0);	
-	}
-	mlx_loop(t.img.mlx_ptr);
-	return (0);
-}*/
-
 int main(int argc, char **argv)
 {
-	t_data *data;
+	t_cub mlx;
 
 	if (argc != 2)
 		ft_perror(EINVAL, "./so_long [MAP.cub]");
-	data = init_argument(argv[1]); // init the data structure
- 	start_the_game(data); // start the game
+	init_argument(argv[1], &mlx); // init the data structure
+ 	start_the_game(&mlx); // start the game
 	return 0;
 }

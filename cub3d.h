@@ -27,10 +27,10 @@
 //# define W 800
 # define S_W 800				 // screen width
 # define S_H 600				 // screen height
-# define TILE_SIZE 64	 // tile size
+# define TILE_SIZE 64	 // tile size = s_w / size_map
 # define FOV 70			 // field of view
 # define ROTATION_SPEED 0.045 // rotation speed
-# define PLAYER_SPEED 16		 // player speed
+# define PLAYER_SPEED 16		 // player speed = size_map
 #define texWidth 64
 #define texHeight 64
 #define mapWidth 25
@@ -43,18 +43,7 @@
 # define N -PI/2
 
 # define EXTENSION ".cub"
-# define VALID_CHAR "01PNEWS"
-
-
-
-
-/* typedef struct s_txtr
-{
-	char			*key;
-	char			*value;
-	struct s_txtr	*next;
-}	t_txtr;
- */
+# define VALID_CHAR "01 NEWS"
 
 typedef struct s_player // the player structure
 {
@@ -90,8 +79,6 @@ typedef struct s_data // the data structure
 	int		h_map;	  // map height
 	int		n_p;      //num player
 	char	**map2d; // the map
-	char	**input_chars;
-
 }			t_data;
 
 typedef struct s_img
@@ -111,17 +98,17 @@ typedef struct s_img
 
 typedef struct s_tex
 {
-	t_img	north;
-	t_img	south;
-	t_img	west;
-	t_img	east;
+	t_img	*north;
+	t_img	*south;
+	t_img	*west;
+	t_img	*east;
 	int		floor;
 	int		ceiling;
 }	t_tex;
 
 typedef struct s_cub // the mlx structure
 {
-	t_img		img;	   // the image
+	t_img		*img;	   // the image
 	t_ray		*ray;	   // the ray structure
 	t_data		*dt;	   // the data structure
 	t_player	*ply; // the player structure
@@ -140,7 +127,7 @@ typedef struct s_square
 } 						t_square;
 
 int			exit_win(t_img *window);
-t_img		new_program(int w, int h, char *str);
+t_img		*new_program(int w, int h, char *str);
 void		my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
 void		cast_rays(t_cub *mlx);
 void		render_wall(t_cub *mlx, int ray);
@@ -154,16 +141,16 @@ void		ft_exit(t_cub *mlx);
 int			exit_win(t_img *window);
 void		move_player(t_cub *mlx, double move_x, double move_y);
 void		rotate_player(t_cub *mlx, int i);
-void		start_the_game(t_data *dt);
+void		start_the_game(t_cub *mlx);
 
-t_img			new_file_img(char * path, t_img window);
+t_img			*new_file_img(char * path, t_cub *window);
 unsigned int	get_pixel_img(t_img img, int x, int y);
 
 /* Parsing functions */
 int		ft_open(char *filename);
 char	*ft_strcat(char *s1, char *s2, int clean_it);
 char	**ft_read(int fd);
-t_data		*init_argument(char *argv);
+void	init_argument(char *argv, t_cub *mlx);
 void	get_map_size(t_data *map);
 void	check_valid_char(t_data *data);
 

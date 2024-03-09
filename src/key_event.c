@@ -32,7 +32,7 @@ int read_keys(int key_pressed, void *param)
 	else if (key_pressed == 65363) // rotate right
 		return (cub->ply->rot = 1);
 	else if (key_pressed == 65307) // ESC Linux
-		exit_win(&cub->img);
+		exit_win(cub->img);
 	return (0);
 }
 

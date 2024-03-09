@@ -59,8 +59,8 @@ void ft_exit(t_cub *mlx)   // exit the game
  free(mlx->dt); // free the data structure
  free(mlx->ply); // free the player structure
  free(mlx->ray); // free the ray structure
- mlx_destroy_image(mlx->img.mlx_ptr, mlx->img.img_ptr); // delete the image
- mlx_destroy_window(mlx->img.mlx_ptr, mlx->img.win_ptr); // terminate the mlx pointer
+ mlx_destroy_image(mlx->img->mlx_ptr, mlx->img->img_ptr); // delete the image
+ mlx_destroy_window(mlx->img->mlx_ptr, mlx->img->win_ptr); // terminate the mlx pointer
  printf("Game closed\n"); // print the message
  exit(0); // exit the game
 }

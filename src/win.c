@@ -12,16 +12,17 @@
 
 #include "cub3d.h"
 
-t_img new_program(int w, int h, char *str)
+t_img *new_program(int w, int h, char *str)
 {
-	t_img img;
+	t_img *img;
 
-	img.mlx_ptr = mlx_init();
-	img.win_ptr = mlx_new_window(img.mlx_ptr, w, h, str);
-	img.img_ptr = mlx_new_image(img.mlx_ptr, w, h);
-	img.addr = mlx_get_data_addr(img.img_ptr, &(img.bpp), &(img.l_len), &(img.endian));
-	img.w = w;
-	img.h = h;
+	img = ft_calloc(1, sizeof(t_img));
+	img->mlx_ptr = mlx_init();
+	img->win_ptr = mlx_new_window(img->mlx_ptr, w, h, str);
+	img->img_ptr = mlx_new_image(img->mlx_ptr, w, h);
+	img->addr = mlx_get_data_addr(img->img_ptr, &(img->bpp), &(img->l_len), &(img->endian));
+	img->w = w;
+	img->h = h;
 	return (img);
 }
 
@@ -29,9 +30,9 @@ void my_mlx_pixel_put(t_cub *cub, int x, int y, int color) // put the pixel
 {
 	char *dst;
 
-	if (x >= 0 && y >= 0 && x < cub->img.w && y < cub->img.h)
+	if (x >= 0 && y >= 0 && x < cub->img->w && y < cub->img->h)
 	{
-		dst = cub->img.addr + (y * cub->img.l_len + x * (cub->img.bpp / 8));
+		dst = cub->img->addr + (y * cub->img->l_len + x * (cub->img->bpp / 8));
 		*(unsigned int *)dst = color;
 	} // put the pixel
 }
@@ -48,69 +49,33 @@ void draw_floor_ceiling(t_cub *mlx, int ray, int t_pix, int b_pix) // draw the f
 		my_mlx_pixel_put(mlx, ray, i, mlx->textures->ceiling); // ceiling
 }
 
-int get_color(t_cub *mlx) // get the color of the wall
+t_img *get_texture(t_cub *mlx) // get the texture of the wall
 {
 	mlx->ray->ray_angle = nor_angle(mlx->ray->ray_angle); // normalize the angle
 	if (mlx->ray->flag == 0)
 	{
 		if (mlx->ray->ray_angle > PI / 2 && mlx->ray->ray_angle < 3 * (PI / 2))
-		{
-			// mlx_destroy_image(mlx->tex.mlx_ptr, mlx->tex.img_ptr);
-			// mlx->tex = new_file_img("img.xpm", mlx->img);
-			return (0x800000); // west wall
-		}
-		else
-			return (0x3B7861); // east wall
-	}
-	else
-	{
-		if (mlx->ray->ray_angle > 0 && mlx->ray->ray_angle < PI)
-		{
-			// mlx_destroy_image(mlx->tex.mlx_ptr, mlx->tex.img_ptr);
-			// mlx->tex = new_file_img("redbrick.xpm", mlx->img);
-			return (0x5E4B41); // south wall
-		}
-		else
-			return (0x808080); // north wall
-	}
-	return (0);
-}
-
-t_img get_texture(t_cub *mlx) // get the texture of the wall
-{
-	mlx->ray->ray_angle = nor_angle(mlx->ray->ray_angle); // normalize the angle
-	if (mlx->ray->flag == 0)
-	{
-		if (mlx->ray->ray_angle > PI / 2 && mlx->ray->ray_angle < 3 * (PI / 2))
-		{
-			// mlx_destroy_image(mlx->tex.mlx_ptr, mlx->tex.img_ptr);
-			// mlx->tex = new_file_img("img.xpm", mlx->img);
 			return (mlx->textures->west); // west wall
-		}
 		else
 			return (mlx->textures->east); // east wall
 	}
 	else
 	{
 		if (mlx->ray->ray_angle > 0 && mlx->ray->ray_angle < PI)
-		{
-			// mlx_destroy_image(mlx->tex.mlx_ptr, mlx->tex.img_ptr);
-			// mlx->tex = new_file_img("redbrick.xpm", mlx->img);
 			return (mlx->textures->south); // south wall
-		}
 		else
 			return (mlx->textures->north); // north wall
 	}
 }
 
-double get_x_o(t_cub *mlx, t_img current_texture)
+double get_x_o(t_cub *mlx, t_img *current_texture)
 {
 	double x_o;
 // se chaquea la insidencia del rayo
 	if (mlx->ray->flag == 1)//calculo de relacion horizontal
-		x_o = (int)fmodf((mlx->ray->horiz_x * (current_texture.w / TILE_SIZE)), current_texture.w);
+		x_o = (int)fmodf((mlx->ray->horiz_x * (current_texture->w / TILE_SIZE)), current_texture->w);
 	else// calculo de relacion vertical
-		x_o = (int)fmodf((mlx->ray->vert_y *(current_texture.w / TILE_SIZE)),current_texture.w);
+		x_o = (int)fmodf((mlx->ray->vert_y *(current_texture->w / TILE_SIZE)),current_texture->w);
 	return (x_o);
 }
 
@@ -120,11 +85,11 @@ void draw_wall(t_cub *mlx, int t_pix, int b_pix, double wall_h) // draw the wall
 	double y_o;//y de la textura
 	unsigned int *img_addr;//datos de la imagen, no es necesario podria utilizarse la propia variable mlx
 	double factor;
-	t_img current_texture;
+	t_img *current_texture;
 
 	current_texture = get_texture(mlx);
-	img_addr = (unsigned int *)current_texture.addr;
-	factor = (double)current_texture.h / wall_h;
+	img_addr = (unsigned int *)current_texture->addr;
+	factor = (double)current_texture->h / wall_h;
 	x_o = get_x_o(mlx, current_texture);//seria la linea de la textura correspondiente en relacion a la imagen o sea donde estaria 
 	//ray correspondiente en la textura segun el ancho del bloque de pared
 	y_o = (t_pix - (S_H / 2) + (wall_h / 2)) * factor;
@@ -132,7 +97,7 @@ void draw_wall(t_cub *mlx, int t_pix, int b_pix, double wall_h) // draw the wall
 		y_o = 0;
 	while (t_pix < b_pix)
 	{
-		my_mlx_pixel_put(mlx, mlx->ray->index, t_pix, (img_addr[(int)y_o * current_texture.w + (int)x_o]));
+		my_mlx_pixel_put(mlx, mlx->ray->index, t_pix, (img_addr[(int)y_o * current_texture->w + (int)x_o]));
 		y_o += factor;
 		t_pix++;
 	}
