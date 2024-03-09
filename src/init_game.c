@@ -12,26 +12,13 @@
 
 #include "cub3d.h"
 
-t_data *init_argumet(void) // init the data structure
+t_data *init_argument(char *argv) // init the data structure
 {
- t_data *dt = ft_calloc(1, sizeof(t_data)); // init the data structure
- dt->map2d = ft_calloc(10, sizeof(char *)); // init the map
- dt->map2d[0] = strdup("1111111111111111111111111"); //fill the map
- dt->map2d[1] = strdup("1000000000000000000100001");
- dt->map2d[2] = strdup("1001000000000P00000000001");
- dt->map2d[3] = strdup("1001000000000000001000001");
- dt->map2d[4] = strdup("1001000000000000001000001");
- dt->map2d[5] = strdup("1001000000100000001000001");
- dt->map2d[6] = strdup("1001000000000000001000001");
- dt->map2d[7] = strdup("1001000000001000001000001");
- dt->map2d[8] = strdup("1111111111111111111111111");
- dt->map2d[9] = NULL;
- dt->p_y = 3; // player y position in the map
- dt->p_x = 14; // player' x position in the map
- dt->p_a = N; //player initial angle
- dt->w_map = 25; // map width
- dt->h_map = 9; // map height
- return (dt); // return the data structure
+	t_data *dt = safe_calloc(1, sizeof(t_data)); // init the data structure
+	dt->map2d = ft_read(ft_open(argv)); // Change to input chars
+	get_map_size(dt);
+	check_valid_char(dt);
+	return (dt); // return the data structure
 }
 
 void init_the_player(t_cub mlx) // init the player structure
@@ -45,11 +32,11 @@ void init_the_player(t_cub mlx) // init the player structure
 
 void    draw_image(t_cub *mlx)
 {
-    mlx_destroy_image(mlx->img.mlx_ptr, mlx->img.img_ptr); // delete the image
-    mlx->img.img_ptr = mlx_new_image(mlx->img.mlx_ptr, S_W, S_H); // create new image
-    hook(mlx, 0, 0); // hook the player
-    cast_rays(mlx); // cast the rays
-    mlx_put_image_to_window(mlx->img.mlx_ptr, mlx->img.win_ptr, mlx->img.img_ptr, 0, 0); // put the image to the window
+//	mlx_destroy_image(mlx->img.mlx_ptr, mlx->img.img_ptr); // delete the image
+//	mlx->img.img_ptr = mlx_new_image(mlx->img.mlx_ptr, S_W, S_H); // create new image
+	hook(mlx, 0, 0); // hook the player
+	cast_rays(mlx); // cast the rays
+	mlx_put_image_to_window(mlx->img.mlx_ptr, mlx->img.win_ptr, mlx->img.img_ptr, 0, 0); // put the image to the window
 }
 
 int game_loop(void *ml) // game loop
@@ -58,7 +45,7 @@ int game_loop(void *ml) // game loop
 
  mlx = ml; // cast to the mlx structure
  if (mlx->ply->l_r || mlx->ply->u_d || mlx->ply->rot) // check if player moved. If not does not draw another image
-    draw_image(mlx);
+	draw_image(mlx);
  return (0);
 }
 

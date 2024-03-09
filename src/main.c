@@ -32,11 +32,13 @@ int main(void)
 	return (0);
 }*/
 
-int main(void)
+int main(int argc, char **argv)
 {
 	t_data *data;
 
-	data = init_argumet(); // init the data structure
+	if (argc != 2)
+		ft_perror(EINVAL, "./so_long [MAP.cub]");
+	data = init_argument(argv[1]); // init the data structure
  	start_the_game(data); // start the game
 	return 0;
 }
