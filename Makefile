@@ -21,9 +21,9 @@ OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 DEP = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.d))
 
 # Compile SRC files and move to folders
-$(OBJ_DIR)/%.o : %.c cub3d.h
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c cub3d.h
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -Imlx -Ilibft -O3 -c $< -o $@
+	$(CC) $(CFLAGS) -Imlx -Ilibft -O3 -c -I. $< -o $@
 	@mkdir -p $(DEP_DIR)
 	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/
 
