@@ -44,6 +44,8 @@ char	*ft_strtok(char *input, const char *delim)
 		return (NULL);
 	else
 		i++;
+	while (is_delim(str[i], delim))
+        i++;
 	start = i;
 	while (!is_delim(str[i], delim))
 		i++;

@@ -32,8 +32,11 @@ void	add_to_count(char c, t_data *data, int i, int j)
 
 void	check_quantities(t_data *data)
 {
-	if (data->n_p > 1 || data->n_p < 1)
-		ft_perror(EINVAL, "Num player");
+	if (data->n_p > 1)
+		ft_perror(EINVAL, "More than one player found");
+	if (data->n_p < 1)
+		ft_perror(EINVAL, "No player found");
+
 }
 
 int	check_char(char c)
@@ -55,10 +58,10 @@ void	check_valid_char(t_data *data)
 	int	i;
 	int	j;
 
-	i = 1;
+	i = 0;
 	while (i < data->h_map - 1)
 	{
-		j = 1;
+		j = 0;
 		while (j < data->w_map - 1)
 		{
 			if (check_char(data->map2d[i][j]))

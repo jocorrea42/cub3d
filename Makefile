@@ -16,7 +16,7 @@ INC_DIR = inc
 # Source files
 SRC = image_utils.c init_game.c key_event.c main.c move_event.c raycast.c square.c \
 	utils.c win.c ft_perror.c safe_allocation.c read_utils.c open_utils.c check_map.c \
-	ft_strtok.c
+	ft_strtok.c check_closed.c clean_utils.c
 
 # Object files
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))

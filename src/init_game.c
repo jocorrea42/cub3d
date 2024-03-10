@@ -24,7 +24,7 @@ void	init_the_player(t_cub *mlx) // init the player structure
 																// the rest of the variables are initialized to zero by calloc
 }
 
-void print_array(char **arr)
+void print_array(char **arr) // DEBUG FUNCTION -> DELETE
 {
 	while (*arr)
 	{
@@ -35,15 +35,11 @@ void print_array(char **arr)
 
 void	init_structs(t_cub *mlx) // init the data structure
 {
-	//char	**tmp;
-	
 	mlx->dt = (t_data *) safe_calloc(1, sizeof(t_data)); // init the data structure
 	mlx->ply = (t_player *) safe_calloc(1, sizeof(t_player));
 	mlx->ray = (t_ray *)safe_calloc(1, sizeof(t_ray));
 	mlx->textures = (t_tex *) safe_calloc (1, sizeof(t_tex));
 	mlx->img = new_program(S_W, S_H, "CUB3D");
-
-	//return (dt); // return the data structure
 }
 
 int		is_textures_ok(t_tex *tex)
@@ -53,34 +49,56 @@ int		is_textures_ok(t_tex *tex)
 
 void	add_texture(char *tok, char *info, t_cub *mlx)
 {
-	if (!ft_strcmp(tok, "NO")) //add check if already set
+	if (!ft_strcmp(tok, "NO") && !mlx->textures->north)
 		mlx->textures->north = new_file_img(info, mlx);
-	else if (!ft_strcmp(tok, "SO"))
+	else if (!ft_strcmp(tok, "SO") && !mlx->textures->south)
 		mlx->textures->south = new_file_img(info, mlx);
-	else if (!ft_strcmp(tok, "WE"))
+	else if (!ft_strcmp(tok, "WE") && !mlx->textures->west)
 		mlx->textures->west = new_file_img(info, mlx);
-	else if (!ft_strcmp(tok, "EA"))
+	else if (!ft_strcmp(tok, "EA") && !mlx->textures->east)
 		mlx->textures->east = new_file_img(info, mlx);
-	else if (!ft_strcmp(tok, "C"))
+	else if (!ft_strcmp(tok, "C") && !mlx->textures->ceiling)
 		mlx->textures->ceiling = create_new_color(info);
-	else if (!ft_strcmp(tok, "F"))
+	else if (!ft_strcmp(tok, "F") && !mlx->textures->floor)
 		mlx->textures->floor = create_new_color(info);
 	else
 		ft_perror(EINVAL, "Invalid texture/color identifier");
 }
 
-void	check_texture_input(char *line, t_cub *mlx)
+void	check_texture_input(char *line, t_cub *mlx) // Case  F      17,    38,     64 not works
 {
 	char *tok;
 	char *info;
 	char *rest;
 
-	tok = ft_strtok(line, " ");
+	tok = ft_strtok(line, " "); // if tok C or F...
 	info = ft_strtok(NULL, " ");
 	rest = ft_strtok(NULL, " ");
 	if (info == NULL || rest != NULL)
 		ft_perror(EINVAL, "Invalid texture/color format");
 	add_texture(tok, info, mlx);
+}
+
+void	create_square_map(char **tmp, t_data *dt)
+{
+	size_t	width;
+	int		height;
+
+	width = 0;
+	height = 0;
+	while (tmp[height])
+	{
+		if (ft_strlen(tmp[height]) > width)
+			width = ft_strlen(tmp[height]);
+		height++;
+	}
+	dt->map2d = (char **) safe_calloc (height + 1, sizeof(char *));
+	while (--height >= 0)
+	{
+		dt->map2d[height] = (char *) safe_calloc (1, sizeof(char) * (width + 1));
+		ft_memset(dt->map2d[height], '0', width);
+		ft_memcpy(dt->map2d[height], tmp[height], ft_strlen(tmp[height]));
+	}
 }
 
 void	parse_input(char *argv, t_cub *mlx)
@@ -91,7 +109,7 @@ void	parse_input(char *argv, t_cub *mlx)
 
 	(void)mlx;
 	i = 0;
-	tmp = ft_read(ft_open(argv));
+	tmp = ft_read(ft_open(argv)); // Currently read using split erases all empty lines. Change it?
 	while (tmp[i] && !is_textures_ok(mlx->textures)) // loop until all textures are filled
 	{
 		line = ft_strtrim(tmp[i], " \n");
@@ -99,12 +117,14 @@ void	parse_input(char *argv, t_cub *mlx)
 		free(line);
 		i++;
 	}
-	
-	//print_array(tmp);
-	mlx->dt->tmp = tmp;
-	mlx->dt->map2d = tmp + i;    
+	if (!tmp[i])
+		ft_perror(EINVAL, "No map");
+	create_square_map(tmp + i, mlx->dt);
 	get_map_size(mlx->dt);
 	check_valid_char(mlx->dt);
+	check_closed(mlx);
+	print_array(tmp);
+	clean_array(tmp);
 	init_the_player(mlx); // init the player structure
 }
 

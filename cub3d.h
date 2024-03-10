@@ -159,6 +159,7 @@ void	init_structs(t_cub *mlx);
 void	parse_input(char *argv, t_cub *mlx);
 void	get_map_size(t_data *map);
 void	check_valid_char(t_data *data);
+void	check_closed(t_cub *data);
 
 /* Errors functions */
 void	ft_perror(int err, char *msg);
@@ -166,10 +167,14 @@ void	ft_perror(int err, char *msg);
 /* Safe allocation functions */
 void	*safe_calloc(size_t count, size_t size);
 char	*safe_strtrim(char const *s1, char const *set);
-
+char	*safe_strdup(const char *s1);
 
 /* Utils functions */
 char	*ft_strtok(char *input, const char *delim);
 int		ft_strcmp(char *str1, char *str2);
+void	clean_array(void *array);
+
+
+void print_array(char **arr);
 
 #endif

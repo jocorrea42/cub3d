@@ -44,6 +44,8 @@ int	create_new_color(char *path)
 		i++;
 		tok = ft_strtok(NULL, ",");
 	}
+	if (i != 3)
+		ft_perror(EINVAL, "RBG missing");
 	return (color);
 }
 
@@ -51,6 +53,8 @@ t_img	*new_file_img(char *path, t_cub *mlx)
 {
 	t_img	*img;
 
+	if (ft_strcmp(".xpm", ft_strrchr(path, '.')))
+		ft_perror(EINVAL, "Image must be .xpm");
 	img = safe_calloc(1, sizeof(t_img));
 	img->img_ptr = mlx_xpm_file_to_image(mlx->img->mlx_ptr, path,
 			&img->w, &img->h);
