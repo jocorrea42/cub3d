@@ -79,6 +79,7 @@ typedef struct s_data // the data structure
 	int		h_map;	  // map height
 	int		n_p;      //num player
 	char	**map2d; // the map
+	char	**tmp;
 }			t_data;
 
 typedef struct s_img
@@ -143,8 +144,12 @@ void		move_player(t_cub *mlx, double move_x, double move_y);
 void		rotate_player(t_cub *mlx, int i);
 void		start_the_game(t_cub *mlx);
 
-t_img			*new_file_img(char * path, t_cub *window);
 unsigned int	get_pixel_img(t_img img, int x, int y);
+
+/* Texture and color functions */
+int	create_new_color(char *path);
+t_img			*new_file_img(char * path, t_cub *window);
+
 
 /* Parsing functions */
 int		ft_open(char *filename);
@@ -160,6 +165,8 @@ void	ft_perror(int err, char *msg);
 
 /* Safe allocation functions */
 void	*safe_calloc(size_t count, size_t size);
+char	*safe_strtrim(char const *s1, char const *set);
+
 
 /* Utils functions */
 char	*ft_strtok(char *input, const char *delim);

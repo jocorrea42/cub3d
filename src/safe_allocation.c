@@ -78,3 +78,17 @@ char	**safe_split(char const *s, char c)
 	}
 	return (ret);
 }
+
+char	*safe_strtrim(char const *s1, char const *set)
+{
+	char *ret;
+
+	ret = ft_strtrim(s1, set);
+	if (!ret)
+	{
+		perror("ft_strtrim failed");
+		exit(EXIT_FAILURE);
+	}
+	return (ret);
+}
+

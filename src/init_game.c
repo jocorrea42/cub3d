@@ -12,14 +12,23 @@
 
 #include "cub3d.h"
 
+void	init_the_player(t_cub *mlx) // init the player structure
+{
+	mlx->ply->plyr_x = mlx->dt->p_x * TILE_SIZE + TILE_SIZE / 2;
+		// player x position in pixels in the center of the tile
+	mlx->ply->plyr_y = mlx->dt->p_y * TILE_SIZE + TILE_SIZE / 2;
+		// player y position in pixels in the center of the tile
+	mlx->ply->fov_rd = (FOV * PI) / 180;                       
+		// field of view in radians
+	mlx->ply->angle = mlx->dt->p_a;                              // player angle
+																// the rest of the variables are initialized to zero by calloc
+}
+
 void print_array(char **arr)
 {
 	while (*arr)
 	{
-		if (*arr[0] == '\0')
-			printf("empty line\n");
-		else
-			printf("%s\n", *arr);
+		printf("%s\n", *arr);
 		arr++;
 	}
 }
@@ -44,7 +53,7 @@ int		is_textures_ok(t_tex *tex)
 
 void	add_texture(char *tok, char *info, t_cub *mlx)
 {
-	if (!ft_strcmp(tok, "NO"))
+	if (!ft_strcmp(tok, "NO")) //add check if already set
 		mlx->textures->north = new_file_img(info, mlx);
 	else if (!ft_strcmp(tok, "SO"))
 		mlx->textures->south = new_file_img(info, mlx);
@@ -53,9 +62,9 @@ void	add_texture(char *tok, char *info, t_cub *mlx)
 	else if (!ft_strcmp(tok, "EA"))
 		mlx->textures->east = new_file_img(info, mlx);
 	else if (!ft_strcmp(tok, "C"))
-		mlx->textures->ceiling = 0x00BFFF;
+		mlx->textures->ceiling = create_new_color(info);
 	else if (!ft_strcmp(tok, "F"))
-		mlx->textures->floor = 0x3C302A;
+		mlx->textures->floor = create_new_color(info);
 	else
 		ft_perror(EINVAL, "Invalid texture/color identifier");
 }
@@ -71,11 +80,7 @@ void	check_texture_input(char *line, t_cub *mlx)
 	rest = ft_strtok(NULL, " ");
 	if (info == NULL || rest != NULL)
 		ft_perror(EINVAL, "Invalid texture/color format");
-	printf("%s -> %s\n", tok, info);
 	add_texture(tok, info, mlx);
-	(void)tok;
-	(void)info;
-	(void)mlx;
 }
 
 void	parse_input(char *argv, t_cub *mlx)
@@ -96,23 +101,13 @@ void	parse_input(char *argv, t_cub *mlx)
 	}
 	
 	//print_array(tmp);
-
-	mlx->dt->map2d = tmp + i;         // Change to input chars
+	mlx->dt->tmp = tmp;
+	mlx->dt->map2d = tmp + i;    
 	get_map_size(mlx->dt);
 	check_valid_char(mlx->dt);
+	init_the_player(mlx); // init the player structure
 }
 
-void	init_the_player(t_cub *mlx) // init the player structure
-{
-	mlx->ply->plyr_x = mlx->dt->p_x * TILE_SIZE + TILE_SIZE / 2;
-		// player x position in pixels in the center of the tile
-	mlx->ply->plyr_y = mlx->dt->p_y * TILE_SIZE + TILE_SIZE / 2;
-		// player y position in pixels in the center of the tile
-	mlx->ply->fov_rd = (FOV * PI) / 180;                       
-		// field of view in radians
-	mlx->ply->angle = mlx->dt->p_a;                              // player angle
-																// the rest of the variables are initialized to zero by calloc
-}
 
 void	draw_image(t_cub *mlx)
 {
@@ -138,14 +133,10 @@ int	game_loop(void *ml) // game loop
 
 void	start_the_game(t_cub *mlx) // start the game
 {
-	// mlx_put_image_to_window (mlx.tex.mlx_ptr, mlx.tex.win_ptr,mlx.tex.img_ptr, 0, 0);
-	init_the_player(mlx); // init the player structure
 	draw_image(mlx);
 	mlx_loop_hook(mlx->img->mlx_ptr, &game_loop, mlx);
-		// game loop continuously call a specified function to update the game state and render the frames.
 	mlx_hook(mlx->img->win_ptr, 2, 1L << 0, read_keys, mlx);
 	mlx_hook(mlx->img->win_ptr, 17, 0, exit_win, mlx->img);
-	// printf("text.h=%d, text.w=%d\n", mlx.tex.h, mlx.tex.w);
 	mlx_loop(mlx->img->mlx_ptr); // mlx loop
 	ft_exit(mlx);             // exit the game
 }
