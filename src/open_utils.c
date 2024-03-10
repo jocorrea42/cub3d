@@ -51,7 +51,7 @@ char	*ft_strcat(char *s1, char *s2, int clean_it)
 void	check_extension(char *filename)
 {
 	if (ft_strcmp(EXTENSION, ft_strrchr(filename, '.')))
-		ft_perror(EINVAL, ".cub extension");
+		ft_perror(EINVAL, "map must br .cub");
 }
 
 int	ft_open(char *filename)

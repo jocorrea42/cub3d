@@ -150,7 +150,8 @@ unsigned int	get_pixel_img(t_img img, int x, int y);
 int		ft_open(char *filename);
 char	*ft_strcat(char *s1, char *s2, int clean_it);
 char	**ft_read(int fd);
-void	init_argument(char *argv, t_cub *mlx);
+void	init_structs(t_cub *mlx);
+void	parse_input(char *argv, t_cub *mlx);
 void	get_map_size(t_data *map);
 void	check_valid_char(t_data *data);
 
@@ -159,5 +160,9 @@ void	ft_perror(int err, char *msg);
 
 /* Safe allocation functions */
 void	*safe_calloc(size_t count, size_t size);
+
+/* Utils functions */
+char	*ft_strtok(char *input, const char *delim);
+int		ft_strcmp(char *str1, char *str2);
 
 #endif

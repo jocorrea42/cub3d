@@ -18,7 +18,9 @@ int main(int argc, char **argv)
 
 	if (argc != 2)
 		ft_perror(EINVAL, "./so_long [MAP.cub]");
-	init_argument(argv[1], &mlx); // init the data structure
+	init_structs(&mlx); // init the data structure
+	parse_input(argv[1], &mlx);
+	//exit(17);
  	start_the_game(&mlx); // start the game
 	return 0;
 }

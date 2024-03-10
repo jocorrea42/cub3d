@@ -16,7 +16,7 @@ t_img *new_program(int w, int h, char *str)
 {
 	t_img *img;
 
-	img = ft_calloc(1, sizeof(t_img));
+	img = safe_calloc(1, sizeof(t_img));
 	img->mlx_ptr = mlx_init();
 	img->win_ptr = mlx_new_window(img->mlx_ptr, w, h, str);
 	img->img_ptr = mlx_new_image(img->mlx_ptr, w, h);

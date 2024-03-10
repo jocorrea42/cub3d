@@ -12,18 +12,94 @@
 
 #include "cub3d.h"
 
-void	init_argument(char *argv, t_cub *mlx) // init the data structure
+void print_array(char **arr)
+{
+	while (*arr)
+	{
+		if (*arr[0] == '\0')
+			printf("empty line\n");
+		else
+			printf("%s\n", *arr);
+		arr++;
+	}
+}
+
+void	init_structs(t_cub *mlx) // init the data structure
 {
 	//char	**tmp;
 	
-	mlx->dt = safe_calloc(1, sizeof(t_data)); // init the data structure
-	mlx->ply = safe_calloc(1, sizeof(t_player));
-	mlx->ray = safe_calloc(1, sizeof(t_ray));
+	mlx->dt = (t_data *) safe_calloc(1, sizeof(t_data)); // init the data structure
+	mlx->ply = (t_player *) safe_calloc(1, sizeof(t_player));
+	mlx->ray = (t_ray *)safe_calloc(1, sizeof(t_ray));
+	mlx->textures = (t_tex *) safe_calloc (1, sizeof(t_tex));
 	mlx->img = new_program(S_W, S_H, "CUB3D");
-	mlx->dt->map2d = ft_read(ft_open(argv));          // Change to input chars
+
+	//return (dt); // return the data structure
+}
+
+int		is_textures_ok(t_tex *tex)
+{
+	return (tex->ceiling && tex->floor && tex->north && tex->south && tex->west && tex->east);
+}
+
+void	add_texture(char *tok, char *info, t_cub *mlx)
+{
+	if (!ft_strcmp(tok, "NO"))
+		mlx->textures->north = new_file_img(info, mlx);
+	else if (!ft_strcmp(tok, "SO"))
+		mlx->textures->south = new_file_img(info, mlx);
+	else if (!ft_strcmp(tok, "WE"))
+		mlx->textures->west = new_file_img(info, mlx);
+	else if (!ft_strcmp(tok, "EA"))
+		mlx->textures->east = new_file_img(info, mlx);
+	else if (!ft_strcmp(tok, "C"))
+		mlx->textures->ceiling = 0x00BFFF;
+	else if (!ft_strcmp(tok, "F"))
+		mlx->textures->floor = 0x3C302A;
+	else
+		ft_perror(EINVAL, "Invalid texture/color identifier");
+}
+
+void	check_texture_input(char *line, t_cub *mlx)
+{
+	char *tok;
+	char *info;
+	char *rest;
+
+	tok = ft_strtok(line, " ");
+	info = ft_strtok(NULL, " ");
+	rest = ft_strtok(NULL, " ");
+	if (info == NULL || rest != NULL)
+		ft_perror(EINVAL, "Invalid texture/color format");
+	printf("%s -> %s\n", tok, info);
+	add_texture(tok, info, mlx);
+	(void)tok;
+	(void)info;
+	(void)mlx;
+}
+
+void	parse_input(char *argv, t_cub *mlx)
+{
+	char	**tmp;
+	char	*line;
+	int		i;
+
+	(void)mlx;
+	i = 0;
+	tmp = ft_read(ft_open(argv));
+	while (tmp[i] && !is_textures_ok(mlx->textures)) // loop until all textures are filled
+	{
+		line = ft_strtrim(tmp[i], " \n");
+		check_texture_input(line, mlx);
+		free(line);
+		i++;
+	}
+	
+	//print_array(tmp);
+
+	mlx->dt->map2d = tmp + i;         // Change to input chars
 	get_map_size(mlx->dt);
 	check_valid_char(mlx->dt);
-	//return (dt); // return the data structure
 }
 
 void	init_the_player(t_cub *mlx) // init the player structure
@@ -62,13 +138,6 @@ int	game_loop(void *ml) // game loop
 
 void	start_the_game(t_cub *mlx) // start the game
 {
-	mlx->textures->north = new_file_img("textures/north.xpm", mlx);
-	mlx->textures->south = new_file_img("textures/south.xpm", mlx);
-	mlx->textures->west = new_file_img("textures/west.xpm", mlx);
-	mlx->textures->east = new_file_img("textures/east.xpm", mlx);
-	mlx->textures->ceiling = 0x00BFFF;
-	mlx->textures->floor = 0x3C302A;
-
 	// mlx_put_image_to_window (mlx.tex.mlx_ptr, mlx.tex.win_ptr,mlx.tex.img_ptr, 0, 0);
 	init_the_player(mlx); // init the player structure
 	draw_image(mlx);

@@ -42,12 +42,16 @@ char	*fake_gnl(int fd)
 char	**ft_read(int fd)
 {
 	char	*map_line;
+	char	*tmp;
 	char	**ret_arr;
 
 	map_line = fake_gnl(fd);
 	close(fd);
 	if (map_line == NULL)
 		ft_perror(EINVAL, "Empty map");
+	tmp = ft_strtrim(map_line, " \n");
+	free(map_line);
+	map_line = tmp;
 	ret_arr = ft_split(map_line, '\n');
 	free(map_line);
 	if (ret_arr == NULL)
