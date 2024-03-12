@@ -25,15 +25,15 @@ DEP = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.d))
 # Compile SRC files and move to folders
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c cub3d.h
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -Imlx -Ilibft -I. -O3 -c $< -o $@
+	$(CC) $(CFLAGS) -Imlx -Ilibft -O3 -c -I. $< -o $@
 	@mkdir -p $(DEP_DIR)
 	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/
 
 all: lib libmlx $(NAME)
 
 $(NAME): $(OBJ) $(ft) $(mlx)
-	$(CC) $(OBJ) -L./mlx -lmlx -framework OpenGL -framework AppKit -L./libft -lft -o $(NAME)
-	@echo "Cub3d compiled!"
+	$(CC) $(OBJ) -Llibft -lft -Lmlx -lmlx -L/usr/lib -Imlx -lXext -lX11 -lm -lz -o $(NAME)
+	@echo "cub3d compiled!"
 
 lib: 
 	make -C libft
