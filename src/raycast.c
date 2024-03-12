@@ -21,18 +21,18 @@
 float nor_angle(float angle) // normalize the angle
 {
  if (angle < 0)
-  angle += (2 * PI);
- if (angle > (2 * PI))
-  angle -= (2 * PI);
+  angle += (2 * M_PI);
+ if (angle > (2 * M_PI))
+  angle -= (2 * M_PI);
  return (angle);
 }
 
 
 int unit_circle(float angle, char c) // check the unit circle
 {
- if (c == 'x' && (angle > 0 && angle < PI))
+ if (c == 'x' && (angle > 0 && angle < M_PI))
    return (1);
- else if (c == 'y' && (angle > (PI / 2) && angle < (3 * PI) / 2))
+ else if (c == 'y' && (angle > (M_PI / 2) && angle < (3 * M_PI) / 2))
    return (1);
  return (0);
 }
@@ -41,7 +41,7 @@ int inter_check(float angle, float *inter, float *step, int is_horizon) // check
 {
  if (is_horizon)//if horizontal hit
  {
-  if (angle > 0 && angle < PI)//between 0 and 180 grade but is down part need negative
+  if (angle > 0 && angle < M_PI)//between 0 and 180 grade but is down part need negative
   {
    *inter += TILE_SIZE;
    return (-1);
@@ -50,7 +50,7 @@ int inter_check(float angle, float *inter, float *step, int is_horizon) // check
  }
  else//vertical hit
  {
-  if (!(angle > PI / 2 && angle < 3 * PI / 2)) //between 90-270 right part need negative
+  if (!(angle > M_PI / 2 && angle < 3 * M_PI / 2)) //between 90-270 right part need negative
   {
    *inter += TILE_SIZE;
    return (-1);

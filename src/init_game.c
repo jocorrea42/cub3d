@@ -18,7 +18,7 @@ void	init_the_player(t_cub *mlx) // init the player structure
 		// player x position in pixels in the center of the tile
 	mlx->ply->plyr_y = mlx->dt->p_y * TILE_SIZE + TILE_SIZE / 2;
 		// player y position in pixels in the center of the tile
-	mlx->ply->fov_rd = (FOV * PI) / 180;                       
+	mlx->ply->fov_rd = (FOV * M_PI) / 180;                       
 		// field of view in radians
 	mlx->ply->angle = mlx->dt->p_a;                              // player angle
 																// the rest of the variables are initialized to zero by calloc

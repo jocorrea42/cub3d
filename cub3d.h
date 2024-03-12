@@ -23,24 +23,18 @@
 # include <fcntl.h>
 # include <errno.h>
 
-# define PI 3.14159265
-//# define W 800
 # define S_W 800				 // screen width
 # define S_H 600				 // screen height
 # define TILE_SIZE 64	 // tile size = s_w / size_map
 # define FOV 70			 // field of view
 # define ROTATION_SPEED 0.045 // rotation speed
 # define PLAYER_SPEED 16		 // player speed = size_map
-#define texWidth 64
-#define texHeight 64
-#define mapWidth 25
-#define mapHeight 9
 
 //We will need to know where the player is pointing to in the begining of the game.
 # define E 0
-# define W PI
-# define S PI/2
-# define N -PI/2
+# define W M_PI
+# define S M_PI_2
+# define N -M_PI_2
 
 # define EXTENSION ".cub"
 # define VALID_CHAR "01 NEWS"
