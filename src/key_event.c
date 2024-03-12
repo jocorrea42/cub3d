@@ -19,19 +19,19 @@ int read_keys(int key_pressed, void *param)
 	cub = (t_cub *)param;
 	printf("TECLA = %d\n", key_pressed);
 	
-	if (key_pressed == 65364 || key_pressed == 115) // move down
+	if (key_pressed == 65364 || key_pressed == 115 || key_pressed == 1) // move down
 		return (cub->ply->u_d = -1);
-	else if (key_pressed == 65362 || key_pressed == 119) // move up
+	else if (key_pressed == 65362 || key_pressed == 119 || key_pressed == 13) // move up
 		return (cub->ply->u_d = 1);
-	else if (key_pressed == 100) //move right
+	else if (key_pressed == 100 || key_pressed == 2) //move right
 		return (cub->ply->l_r = 1);
-	else if (key_pressed == 97)//move left
+	else if (key_pressed == 97 || key_pressed == 0)//move left
 		return (cub->ply->l_r = -1);
-	else if (key_pressed == 65361) // rotate left
+	else if (key_pressed == 65361 || key_pressed == 123) // rotate left
 		return (cub->ply->rot = -1);
-	else if (key_pressed == 65363) // rotate right
+	else if (key_pressed == 65363 || key_pressed == 124) // rotate right
 		return (cub->ply->rot = 1);
-	else if (key_pressed == 65307) // ESC Linux
+	else if (key_pressed == 65307 || key_pressed == 53) // ESC Linux
 		exit_win(cub->img);
 	return (0);
 }

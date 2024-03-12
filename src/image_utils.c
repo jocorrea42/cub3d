@@ -30,7 +30,7 @@ int	create_new_color(char *path)
 	int		i;
 	int		color;
 
-	color = 255 << 24;
+	color = 0; //Inverse macos and linux....
 	tok = ft_strtok(path, ",");
 	i = 0;
 	while (tok)

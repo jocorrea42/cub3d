@@ -102,6 +102,27 @@ void	create_square_map(char **tmp, t_data *dt)
 		ft_memcpy(dt->map2d[height], tmp[height], ft_strlen(tmp[height]));
 	}
 }
+int	get_t(int trgb)
+{
+	return ((trgb >> 24) & 0xFF);
+}
+
+int	get_r(int trgb)
+{
+	return ((trgb >> 16) & 0xFF);
+}
+
+int	get_g(int trgb)
+{
+	return ((trgb >> 8) & 0xFF);
+}
+
+int	get_b(int trgb)
+{
+	return (trgb & 0xFF);
+}
+
+
 
 void	parse_input(char *argv, t_cub *mlx)
 {
@@ -120,6 +141,8 @@ void	parse_input(char *argv, t_cub *mlx)
 		free(line);
 		i++;
 	}
+	printf("Floor: R - %d G - %d B - %d\n", get_r(mlx->textures->floor), get_g(mlx->textures->floor), get_b(mlx->textures->floor));
+	printf("Ceiling: R - %d G - %d B - %d\n", get_r(mlx->textures->ceiling), get_g(mlx->textures->ceiling), get_b(mlx->textures->ceiling));
 	if (!tmp[i])
 		ft_perror(EINVAL, "No map");
 	while (tmp[i] && tmp[i][0] == '\0')
