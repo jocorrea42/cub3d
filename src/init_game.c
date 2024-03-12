@@ -88,6 +88,8 @@ void	create_square_map(char **tmp, t_data *dt)
 	height = 0;
 	while (tmp[height])
 	{
+		if (tmp[height][0] == '\0')
+			ft_perror(EINVAL, "Space between map");
 		if (ft_strlen(tmp[height]) > width)
 			width = ft_strlen(tmp[height]);
 		height++;
@@ -113,12 +115,15 @@ void	parse_input(char *argv, t_cub *mlx)
 	while (tmp[i] && !is_textures_ok(mlx->textures)) // loop until all textures are filled
 	{
 		line = ft_strtrim(tmp[i], " \n");
-		check_texture_input(line, mlx);
+		if (line[0] != '\0')
+			check_texture_input(line, mlx);
 		free(line);
 		i++;
 	}
 	if (!tmp[i])
 		ft_perror(EINVAL, "No map");
+	while (tmp[i] && tmp[i][0] == '\0')
+		i++;
 	create_square_map(tmp + i, mlx->dt);
 	get_map_size(mlx->dt);
 	check_valid_char(mlx->dt);

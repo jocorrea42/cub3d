@@ -23,8 +23,26 @@ Error
 Empty map: Invalid argument
 
 Executing cub3d with map file: ./maps/bad/file_letter_end.cub
-Error
-Space between map: Invalid argument
+NO textures/test/north.xpm
+SO textures/test/south.xpm
+WE textures/test/west.xpm
+EA textures/test/east.xpm
+F 20,20,20
+C 200,200,200
+11111
+10001
+10S01
+10001
+10001
+10001
+11001
+10001
+10001
+10001
+10001
+10001
+11111
+1
 
 Executing cub3d with map file: ./maps/bad/filetype_missing
 Error
@@ -35,23 +53,8 @@ Error
 map must br .cub: Invalid argument
 
 Executing cub3d with map file: ./maps/bad/forbidden.cub
-NO textures/wolfenstein/grey_stone.xpm
-SO textures/wolfenstein/purple_stone.xpm
-WE textures/wolfenstein/red_brick.xpm
-EA textures/wolfenstein/wood.xpm
-
-F 18,53,25
-C 153,204,255
-
-111111111111
-1         11
-1          1
-111111111111
-10S000000001
-111111111111
-11         1
-111111111111
-TECLA = 65307
+Error
+open: Permission denied
 
 Executing cub3d with map file: ./maps/bad/map_first.cub
 Error
@@ -94,28 +97,8 @@ Error
 Invalid texture/color identifier: Invalid argument
 
 Executing cub3d with map file: ./maps/bad/textures_forbidden.cub
-NO textures/test/forbidden.xpm
-SO textures/test/south.xpm
-WE textures/test/west.xpm
-EA textures/test/east.xpm
-
-F 20,20,20
-C 200,200,200
-
-11111
-10001
-10S01
-10001
-10001
-10001
-11001
-10001
-10001
-10001
-10001
-10001
-11111
-TECLA = 65307
+Error
+Cannot load image: Invalid argument
 
 Executing cub3d with map file: ./maps/bad/textures_invalid.cub
 Error

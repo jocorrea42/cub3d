@@ -26,7 +26,7 @@
 # define S_W 800				 // screen width
 # define S_H 600				 // screen height
 # define TILE_SIZE 64	 // tile size = s_w / size_map
-# define FOV 70			 // field of view
+# define FOV 60			 // field of view
 # define ROTATION_SPEED 0.045 // rotation speed
 # define PLAYER_SPEED 16		 // player speed = size_map
 
@@ -154,6 +154,7 @@ void	parse_input(char *argv, t_cub *mlx);
 void	get_map_size(t_data *map);
 void	check_valid_char(t_data *data);
 void	check_closed(t_cub *data);
+char    **fake_split(char const *s, char c);
 
 /* Errors functions */
 void	ft_perror(int err, char *msg);
