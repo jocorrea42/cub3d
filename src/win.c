@@ -54,14 +54,14 @@ t_img *get_texture(t_cub *mlx) // get the texture of the wall
 	mlx->ray->ray_angle = nor_angle(mlx->ray->ray_angle); // normalize the angle
 	if (mlx->ray->flag == 0)
 	{
-		if (mlx->ray->ray_angle > PI / 2 && mlx->ray->ray_angle < 3 * (PI / 2))
+		if (mlx->ray->ray_angle > M_PI / 2 && mlx->ray->ray_angle < 3 * (M_PI / 2))
 			return (mlx->textures->west); // west wall
 		else
 			return (mlx->textures->east); // east wall
 	}
 	else
 	{
-		if (mlx->ray->ray_angle > 0 && mlx->ray->ray_angle < PI)
+		if (mlx->ray->ray_angle > 0 && mlx->ray->ray_angle < M_PI)
 			return (mlx->textures->south); // south wall
 		else
 			return (mlx->textures->north); // north wall

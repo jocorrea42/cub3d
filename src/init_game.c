@@ -18,7 +18,7 @@ void	init_the_player(t_cub *mlx) // init the player structure
 		// player x position in pixels in the center of the tile
 	mlx->ply->plyr_y = mlx->dt->p_y * TILE_SIZE + TILE_SIZE / 2;
 		// player y position in pixels in the center of the tile
-	mlx->ply->fov_rd = (FOV * PI) / 180;                       
+	mlx->ply->fov_rd = (FOV * M_PI) / 180;                       
 		// field of view in radians
 	mlx->ply->angle = mlx->dt->p_a;                              // player angle
 																// the rest of the variables are initialized to zero by calloc
@@ -88,6 +88,8 @@ void	create_square_map(char **tmp, t_data *dt)
 	height = 0;
 	while (tmp[height])
 	{
+		if (tmp[height][0] == '\0')
+			ft_perror(EINVAL, "Space between map");
 		if (ft_strlen(tmp[height]) > width)
 			width = ft_strlen(tmp[height]);
 		height++;
@@ -113,12 +115,15 @@ void	parse_input(char *argv, t_cub *mlx)
 	while (tmp[i] && !is_textures_ok(mlx->textures)) // loop until all textures are filled
 	{
 		line = ft_strtrim(tmp[i], " \n");
-		check_texture_input(line, mlx);
+		if (line[0] != '\0')
+			check_texture_input(line, mlx);
 		free(line);
 		i++;
 	}
 	if (!tmp[i])
 		ft_perror(EINVAL, "No map");
+	while (tmp[i] && tmp[i][0] == '\0')
+		i++;
 	create_square_map(tmp + i, mlx->dt);
 	get_map_size(mlx->dt);
 	check_valid_char(mlx->dt);

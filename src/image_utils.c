@@ -26,7 +26,7 @@ int	is_positive_number(char *str)
 int	create_new_color(char *path)
 {
 	char	*tok;
-	char	*trim;
+	char	*trim; //Not necessary, every path that gets here is without spaces...
 	int		i;
 	int		color;
 

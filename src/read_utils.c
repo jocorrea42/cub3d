@@ -52,7 +52,7 @@ char	**ft_read(int fd)
 	tmp = ft_strtrim(map_line, " \n");
 	free(map_line);
 	map_line = tmp;
-	ret_arr = ft_split(map_line, '\n');
+	ret_arr = fake_split(map_line, '\n');
 	free(map_line);
 	if (ret_arr == NULL)
 		ft_perror(ENOMEM, "split");

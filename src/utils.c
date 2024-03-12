@@ -28,7 +28,7 @@ double	fcos(int angle)
 	i = 0;
 	while (i < r_angle(360))
 	{
-		fcos[i] = cos(i * PI / r_angle(180)) + 0.1;
+		fcos[i] = cos(i * M_PI / r_angle(180)) + 0.1;
 		i++;
 	}
 	return (fcos[angle]);

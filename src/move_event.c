@@ -18,14 +18,14 @@ void rotate_player(t_cub *mlx, int i) // rotate the player
 	if (i == 1)
 	{
 		mlx->ply->angle += ROTATION_SPEED; // rotate right
-		if (mlx->ply->angle > 2 * PI)
-			mlx->ply->angle -= 2 * PI;
+		if (mlx->ply->angle > 2 * M_PI)
+			mlx->ply->angle -= 2 * M_PI;
 	}
 	else
 	{
 		mlx->ply->angle -= ROTATION_SPEED; // rotate left
 		if (mlx->ply->angle < 0)
-			mlx->ply->angle += 2 * PI;
+			mlx->ply->angle += 2 * M_PI;
 	}
 	mlx->ply->rot = 0;
 }
