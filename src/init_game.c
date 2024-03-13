@@ -39,7 +39,7 @@ void	init_structs(t_cub *mlx) // init the data structure
 	mlx->ply = (t_player *) safe_calloc(1, sizeof(t_player));
 	mlx->ray = (t_ray *)safe_calloc(1, sizeof(t_ray));
 	mlx->textures = (t_tex *) safe_calloc (1, sizeof(t_tex));
-	mlx->img = new_program(S_W, S_H, "CUB3D");
+	mlx->img = new_program();
 }
 
 int		is_textures_ok(t_tex *tex)
@@ -49,34 +49,44 @@ int		is_textures_ok(t_tex *tex)
 
 void	add_texture(char *tok, char *info, t_cub *mlx)
 {
+	char	*tmp;
+
+	if (!info)
+		ft_perror(EINVAL, "Invalid texture - No path");
+	tmp = ft_strtok(info, " ");
 	if (!ft_strcmp(tok, "NO") && !mlx->textures->north)
-		mlx->textures->north = new_file_img(info, mlx);
+		mlx->textures->north = new_file_img(tmp, mlx);
 	else if (!ft_strcmp(tok, "SO") && !mlx->textures->south)
-		mlx->textures->south = new_file_img(info, mlx);
+		mlx->textures->south = new_file_img(tmp, mlx);
 	else if (!ft_strcmp(tok, "WE") && !mlx->textures->west)
-		mlx->textures->west = new_file_img(info, mlx);
+		mlx->textures->west = new_file_img(tmp, mlx);
 	else if (!ft_strcmp(tok, "EA") && !mlx->textures->east)
-		mlx->textures->east = new_file_img(info, mlx);
-	else if (!ft_strcmp(tok, "C") && !mlx->textures->ceiling)
+		mlx->textures->east = new_file_img(tmp, mlx);
+	else
+		ft_perror(EINVAL, "Invalid texture - Wrong identifier");
+	if (ft_strtok(NULL, " "))
+		ft_perror(EINVAL, "Invalid texture - Extra information in line");
+}
+
+void	add_color(char *tok, char *info, t_cub *mlx)
+{
+	if (!info)
+		ft_perror(EINVAL, "Invalid color - No RGB");
+	if (!ft_strcmp(tok, "C") && !mlx->textures->ceiling)
 		mlx->textures->ceiling = create_new_color(info);
 	else if (!ft_strcmp(tok, "F") && !mlx->textures->floor)
 		mlx->textures->floor = create_new_color(info);
-	else
-		ft_perror(EINVAL, "Invalid texture/color identifier");
 }
 
 void	check_texture_input(char *line, t_cub *mlx) // Case  F      17,    38,     64 not works
 {
 	char *tok;
-	char *info;
-	char *rest;
 
-	tok = ft_strtok(line, " "); // if tok C or F...
-	info = ft_strtok(NULL, " ");
-	rest = ft_strtok(NULL, " ");
-	if (info == NULL || rest != NULL)
-		ft_perror(EINVAL, "Invalid texture/color format");
-	add_texture(tok, info, mlx);
+	tok = ft_strtok(line, " ");
+	if (!ft_strcmp(tok, "C") || !ft_strcmp(tok, "F"))
+		add_color(tok, ft_strtok(NULL, "\0"), mlx);
+	else
+		add_texture(tok, ft_strtok(NULL, "\0"), mlx);
 }
 
 void	create_square_map(char **tmp, t_data *dt)
@@ -141,19 +151,19 @@ void	parse_input(char *argv, t_cub *mlx)
 		free(line);
 		i++;
 	}
-	printf("Floor: R - %d G - %d B - %d\n", get_r(mlx->textures->floor), get_g(mlx->textures->floor), get_b(mlx->textures->floor));
-	printf("Ceiling: R - %d G - %d B - %d\n", get_r(mlx->textures->ceiling), get_g(mlx->textures->ceiling), get_b(mlx->textures->ceiling));
 	if (!tmp[i])
 		ft_perror(EINVAL, "No map");
 	while (tmp[i] && tmp[i][0] == '\0')
 		i++;
 	create_square_map(tmp + i, mlx->dt);
+	clean_array(tmp);
 	get_map_size(mlx->dt);
 	check_valid_char(mlx->dt);
 	check_closed(mlx);
-	print_array(tmp);
-	clean_array(tmp);
 	init_the_player(mlx); // init the player structure
+	mlx->img->win_ptr = mlx_new_window(mlx->img->mlx_ptr, S_W, S_H, "cub3D");
+	if (!mlx->img->win_ptr)
+		ft_perror(ENOMEM, "mlx new window failed");
 }
 
 

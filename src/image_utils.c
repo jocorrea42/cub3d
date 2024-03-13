@@ -23,14 +23,15 @@ int	is_positive_number(char *str)
 	return (1);
 }
 
-int	create_new_color(char *path)
+int	*create_new_color(char *path)
 {
 	char	*tok;
-	char	*trim; //Not necessary, every path that gets here is without spaces...
+	char	*trim;
 	int		i;
-	int		color;
+	int		*color;
 
-	color = 0; //Inverse macos and linux....
+	color = (int *) safe_calloc(1, sizeof(int)); 
+	//*color = 255 << 24; For linux...
 	tok = ft_strtok(path, ",");
 	i = 0;
 	while (tok)
@@ -39,7 +40,7 @@ int	create_new_color(char *path)
 		if (i > 2 || ft_strlen(trim) > 3 || !is_positive_number(trim)
 			|| ft_atoi(trim) > 255)
 			ft_perror(EINVAL, "Error in RGB format");
-		color |= ft_atoi(trim) << (16 - (8 * i));
+		*color |= ft_atoi(trim) << (16 - (8 * i));
 		free(trim);
 		i++;
 		tok = ft_strtok(NULL, ",");

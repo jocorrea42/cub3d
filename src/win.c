@@ -12,17 +12,19 @@
 
 #include "cub3d.h"
 
-t_img *new_program(int w, int h, char *str)
+t_img *new_program(void)
 {
 	t_img *img;
 
 	img = safe_calloc(1, sizeof(t_img));
 	img->mlx_ptr = mlx_init();
-	img->win_ptr = mlx_new_window(img->mlx_ptr, w, h, str);
-	img->img_ptr = mlx_new_image(img->mlx_ptr, w, h);
+	if (!img->mlx_ptr)
+		ft_perror(ENOMEM, "mlx init failed");
+	//img->win_ptr = mlx_new_window(img->mlx_ptr, w, h, str);
+	img->img_ptr = mlx_new_image(img->mlx_ptr, S_W, S_H);
 	img->addr = mlx_get_data_addr(img->img_ptr, &(img->bpp), &(img->l_len), &(img->endian));
-	img->w = w;
-	img->h = h;
+	img->w = S_W;
+	img->h = S_H;
 	return (img);
 }
 
@@ -43,10 +45,10 @@ void draw_floor_ceiling(t_cub *mlx, int ray, int t_pix, int b_pix) // draw the f
 
 	i = b_pix;
 	while (i < S_H)
-		my_mlx_pixel_put(mlx, ray, i++, mlx->textures->floor); // floor
+		my_mlx_pixel_put(mlx, ray, i++, *mlx->textures->floor); // floor
 	i = -1;
 	while (++i < t_pix)
-		my_mlx_pixel_put(mlx, ray, i, mlx->textures->ceiling); // ceiling
+		my_mlx_pixel_put(mlx, ray, i, *mlx->textures->ceiling); // ceiling
 }
 
 t_img *get_texture(t_cub *mlx) // get the texture of the wall

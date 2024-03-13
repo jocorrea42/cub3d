@@ -97,8 +97,8 @@ typedef struct s_tex
 	t_img	*south;
 	t_img	*west;
 	t_img	*east;
-	int		floor;
-	int		ceiling;
+	int		*floor;
+	int		*ceiling;
 }	t_tex;
 
 typedef struct s_cub // the mlx structure
@@ -122,7 +122,7 @@ typedef struct s_square
 } 						t_square;
 
 int			exit_win(t_img *window);
-t_img		*new_program(int w, int h, char *str);
+t_img		*new_program(void);
 void		my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
 void		cast_rays(t_cub *mlx);
 void		render_wall(t_cub *mlx, int ray);
@@ -141,7 +141,7 @@ void		start_the_game(t_cub *mlx);
 unsigned int	get_pixel_img(t_img img, int x, int y);
 
 /* Texture and color functions */
-int	create_new_color(char *path);
+int	*create_new_color(char *path);
 t_img			*new_file_img(char * path, t_cub *window);
 
 
