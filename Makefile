@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -Werror -MMD
 
 # External libraries
 ft = libft/libft.a
-mlx = libmlx.dylib
+mlx = mlx/libmlx.a
 
 # Folders
 SRC_DIR = src
@@ -29,10 +29,10 @@ $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c cub3d.h
 	@mkdir -p $(DEP_DIR)
 	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/
 
-all: lib mlx $(NAME)
+all: lib libmlx $(NAME)
 
 $(NAME): $(OBJ) $(ft) $(mlx)
-	$(CC) $(OBJ) -L. -lmlx -framework OpenGL -framework AppKit -L./libft -lft -o $(NAME)
+	$(CC) $(OBJ) -L./mlx -lmlx -framework OpenGL -framework AppKit -L./libft -lft -o $(NAME)
 	@echo "Cub3d compiled!"
 
 lib: 
