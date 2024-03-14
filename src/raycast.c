@@ -85,7 +85,7 @@ float get_h_inter(t_cub *mlx, float angl) // get the horizontal intersection
  float  y_step;
  int    pixel;
 
- y_step = S_W / mlx->dt->w_map;
+ y_step = TILE_SIZE;
  x_step =  y_step / tan(angl);
  h_y = floor(mlx->ply->plyr_y / TILE_SIZE) * TILE_SIZE;
  pixel = inter_check(angl, &h_y, &y_step, 1);
