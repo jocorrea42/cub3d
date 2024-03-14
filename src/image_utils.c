@@ -31,7 +31,6 @@ int	*create_new_color(char *path)
 	int		*color;
 
 	color = (int *) safe_calloc(1, sizeof(int)); 
-	//*color = 255 << 24; For linux...
 	tok = ft_strtok(path, ",");
 	i = 0;
 	while (tok)
