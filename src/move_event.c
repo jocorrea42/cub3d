@@ -39,11 +39,11 @@ void move_player(t_cub *mlx, double move_x, double move_y) // move the player
 
 	new_x = roundf(mlx->ply->plyr_x + move_x); // get the new x position
 	new_y = roundf(mlx->ply->plyr_y + move_y); // get the new y position
-	map_grid_x = (new_x / TILE_SIZE);		   // get the x position in the map
-	map_grid_y = (new_y / TILE_SIZE);		   // get the y position in the map
+	map_grid_x = (new_x / *mlx->tile);		   // get the x position in the map
+	map_grid_y = (new_y / *mlx->tile);		   // get the y position in the map
 	if (mlx->dt->map2d[map_grid_y][map_grid_x] != '1' &&
-		(mlx->dt->map2d[map_grid_y][mlx->ply->plyr_x / TILE_SIZE] != '1' &&
-		 mlx->dt->map2d[mlx->ply->plyr_y / TILE_SIZE][map_grid_x] != '1')) // check the wall hit and the diagonal wall hit
+		(mlx->dt->map2d[map_grid_y][mlx->ply->plyr_x / *mlx->tile] != '1' &&
+		 mlx->dt->map2d[mlx->ply->plyr_y / *mlx->tile][map_grid_x] != '1')) // check the wall hit and the diagonal wall hit
 	{
 		mlx->ply->plyr_x = new_x; // move the player
 		mlx->ply->plyr_y = new_y; // move the player

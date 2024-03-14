@@ -23,12 +23,11 @@
 # include <fcntl.h>
 # include <errno.h>
 
-# define S_W 800				 // screen width
-# define S_H 600				 // screen height
+# define S_W 1920			 // screen width
+# define S_H 1080				 // screen height
 # define TILE_SIZE 64	 // tile size = s_w / size_map
 # define FOV 60			 // field of view
 # define ROTATION_SPEED 0.045 // rotation speed
-# define PLAYER_SPEED 16		 // player speed = size_map
 
 //We will need to know where the player is pointing to in the begining of the game.
 # define E 0
@@ -48,6 +47,7 @@ typedef struct s_player // the player structure
 	int		u_d;	  // up down flag
 	double	angle; // player angle
 	float	fov_rd; // field of view in radians
+	int		speed;
 
 }			t_player;
 
@@ -108,6 +108,7 @@ typedef struct s_cub // the mlx structure
 	t_data		*dt;	   // the data structure
 	t_player	*ply; // the player structure
 	t_tex		*textures;
+	int			*tile;
     //t_img		tex;
 	//t_txtr		*l_ture;
 }				t_cub;

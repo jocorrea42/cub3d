@@ -75,9 +75,9 @@ double get_x_o(t_cub *mlx, t_img *current_texture)
 	double x_o;
 // se chaquea la insidencia del rayo
 	if (mlx->ray->flag == 1)//calculo de relacion horizontal
-		x_o = (int)fmodf((mlx->ray->horiz_x * (current_texture->w / TILE_SIZE)), current_texture->w);
+		x_o = (int)fmodf((mlx->ray->horiz_x * (current_texture->w / *mlx->tile)), current_texture->w);
 	else// calculo de relacion vertical
-		x_o = (int)fmodf((mlx->ray->vert_y *(current_texture->w / TILE_SIZE)),current_texture->w);
+		x_o = (int)fmodf((mlx->ray->vert_y *(current_texture->w / *mlx->tile)),current_texture->w);
 	return (x_o);
 }
 
@@ -112,7 +112,7 @@ void render_wall(t_cub *mlx, int ray)
 	double t_pix;
 
 	mlx->ray->distance *= cos(nor_angle(mlx->ray->ray_angle - mlx->ply->angle));// fix the fisheye
-	wall_h = (TILE_SIZE / mlx->ray->distance) * ((S_W / 2) / tan(mlx->ply->fov_rd / 2));//get the wall height
+	wall_h = (*mlx->tile / mlx->ray->distance) * ((S_W / 2) / tan(mlx->ply->fov_rd / 2));//get the wall height
 	b_pix = (S_H / 2) + (wall_h / 2);//get bottom pixel
 	t_pix = (S_H / 2) - (wall_h / 2);//get top pixel
 	if (b_pix > S_H)//check bottom edge 

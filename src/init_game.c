@@ -14,14 +14,15 @@
 
 void	init_the_player(t_cub *mlx) // init the player structure
 {
-	mlx->ply->plyr_x = mlx->dt->p_x * TILE_SIZE + TILE_SIZE / 2;
+	mlx->ply->plyr_x = mlx->dt->p_x * *mlx->tile + *mlx->tile / 2;
 		// player x position in pixels in the center of the tile
-	mlx->ply->plyr_y = mlx->dt->p_y * TILE_SIZE + TILE_SIZE / 2;
+	mlx->ply->plyr_y = mlx->dt->p_y * *mlx->tile + *mlx->tile / 2;
 		// player y position in pixels in the center of the tile
 	mlx->ply->fov_rd = (FOV * M_PI) / 180;                       
 		// field of view in radians
 	mlx->ply->angle = mlx->dt->p_a;                              // player angle
 																// the rest of the variables are initialized to zero by calloc
+	mlx->ply->speed = *mlx->tile / 2;
 }
 
 void print_array(char **arr) // DEBUG FUNCTION -> DELETE

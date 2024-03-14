@@ -1,7 +1,7 @@
-NO textures/north.xpm
-SO textures/south.xpm
-WE textures/west.xpm
-EA textures/east.xpm
+NO textures/bear.xpm
+SO textures/bear.xpm
+WE textures/bear.xpm
+EA textures/bear.xpm
 
 C 0,191,255
 F 60,48,42

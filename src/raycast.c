@@ -37,13 +37,13 @@ int unit_circle(float angle, char c) // check the unit circle
  return (0);
 }
 
-int inter_check(float angle, float *inter, float *step, int is_horizon) // check the intersection
+int inter_check(float angle, float *inter, float *step, int is_horizon, t_cub *mlx) // check the intersection
 {
  if (is_horizon)//if horizontal hit
  {
   if (angle > 0 && angle < M_PI)//between 0 and 180 grade but is down part need negative
   {
-   *inter += TILE_SIZE;
+   *inter += *mlx->tile;
    return (-1);
   }
   *step *= -1;
@@ -52,7 +52,7 @@ int inter_check(float angle, float *inter, float *step, int is_horizon) // check
  {
   if (!(angle > M_PI / 2 && angle < 3 * M_PI / 2)) //between 90-270 right part need negative
   {
-   *inter += TILE_SIZE;
+   *inter += *mlx->tile;
    return (-1);
   }
   *step *= -1;
@@ -67,8 +67,8 @@ int wall_hit(float x, float y, t_cub *mlx) // check the wall hit
 
  if (x < 0 || y < 0)
   return (0);//return for overfloat windows
- x_m = floor (x / TILE_SIZE); // get the x position in the map
- y_m = floor (y / TILE_SIZE); // get the y position in the map
+ x_m = floor (x / *mlx->tile); // get the x position in the map
+ y_m = floor (y / *mlx->tile); // get the y position in the map
  if ((y_m >= mlx->dt->h_map || x_m >= mlx->dt->w_map))
   return (0);//return for overfloat windows pixels
  if (mlx->dt->map2d[y_m] && x_m <= (int)strlen(mlx->dt->map2d[y_m]))//protection leaks
@@ -85,10 +85,10 @@ float get_h_inter(t_cub *mlx, float angl) // get the horizontal intersection
  float  y_step;
  int    pixel;
 
- y_step = TILE_SIZE;
+ y_step = *mlx->tile;
  x_step =  y_step / tan(angl);
- h_y = floor(mlx->ply->plyr_y / TILE_SIZE) * TILE_SIZE;
- pixel = inter_check(angl, &h_y, &y_step, 1);
+ h_y = floor(mlx->ply->plyr_y / *mlx->tile) * *mlx->tile;
+ pixel = inter_check(angl, &h_y, &y_step, 1, mlx);
  h_x = mlx->ply->plyr_x + (h_y - mlx->ply->plyr_y) / tan(angl);
  if ((unit_circle(angl, 'y') && x_step > 0) || (!unit_circle(angl, 'y') && x_step < 0)) // check x_step value
   x_step *= -1;
@@ -110,10 +110,10 @@ float get_v_inter(t_cub *mlx, float angl) // get the vertical intersection
  float y_step;
  int   pixel;
 
- x_step = TILE_SIZE; 
- y_step = TILE_SIZE * tan(angl);
- v_x = floor(mlx->ply->plyr_x / TILE_SIZE) * TILE_SIZE;
- pixel = inter_check(angl, &v_x, &x_step, 0); // check the intersection and get the pixel value
+ x_step = *mlx->tile; 
+ y_step = *mlx->tile * tan(angl);
+ v_x = floor(mlx->ply->plyr_x / *mlx->tile) * *mlx->tile;
+ pixel = inter_check(angl, &v_x, &x_step, 0, mlx); // check the intersection and get the pixel value
  v_y = mlx->ply->plyr_y + (v_x - mlx->ply->plyr_x) * tan(angl);
  if ((unit_circle(angl, 'x') && y_step < 0) || (!unit_circle(angl, 'x') && y_step > 0)) // check y_step value
   y_step *= -1;

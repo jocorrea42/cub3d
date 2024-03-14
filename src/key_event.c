@@ -17,11 +17,9 @@ int read_keys(int key_pressed, void *param)
 	t_cub *cub;
 
 	cub = (t_cub *)param;
-	printf("TECLA = %d\n", key_pressed);
-	
-	if (key_pressed == 65364 || key_pressed == 115 || key_pressed == 1) // move down
+	if (key_pressed == 65364 || key_pressed == 115 || key_pressed == 1 || key_pressed == 125) // move down
 		return (cub->ply->u_d = -1);
-	else if (key_pressed == 65362 || key_pressed == 119 || key_pressed == 13) // move up
+	else if (key_pressed == 65362 || key_pressed == 119 || key_pressed == 13 || key_pressed == 126) // move up
 		return (cub->ply->u_d = 1);
 	else if (key_pressed == 100 || key_pressed == 2) //move right
 		return (cub->ply->l_r = 1);
@@ -36,7 +34,7 @@ int read_keys(int key_pressed, void *param)
 	return (0);
 }
 
-void hook(t_cub *mlx, double move_x, double move_y) // hook the player
+void hook(t_cub *mlx, double move_x, double move_y)
 {
 	if (mlx->ply->rot == 1) // rotate right
 		rotate_player(mlx, 1);
@@ -44,26 +42,26 @@ void hook(t_cub *mlx, double move_x, double move_y) // hook the player
 		rotate_player(mlx, 0);
 	if (mlx->ply->l_r == 1) // move right
 	{
-		move_x = -sin(mlx->ply->angle) * PLAYER_SPEED;
-		move_y = cos(mlx->ply->angle) * PLAYER_SPEED;
+		move_x = -sin(mlx->ply->angle) * mlx->ply->speed;
+		move_y = cos(mlx->ply->angle) * mlx->ply->speed;
 		mlx->ply->l_r = 0;
 	}
 	if (mlx->ply->l_r == -1) // move left
 	{
-		move_x = sin(mlx->ply->angle) * PLAYER_SPEED;
-		move_y = -cos(mlx->ply->angle) * PLAYER_SPEED;
+		move_x = sin(mlx->ply->angle) * mlx->ply->speed;
+		move_y = -cos(mlx->ply->angle) * mlx->ply->speed;
 		mlx->ply->l_r = 0;
 	}
 	if (mlx->ply->u_d == 1) // move up
 	{
-		move_x = cos(mlx->ply->angle) * PLAYER_SPEED;
-		move_y = sin(mlx->ply->angle) * PLAYER_SPEED;
+		move_x = cos(mlx->ply->angle) * mlx->ply->speed;
+		move_y = sin(mlx->ply->angle) * mlx->ply->speed;
 		mlx->ply->u_d = 0;
 	}
 	if (mlx->ply->u_d == -1) // move down
 	{
-		move_x = -cos(mlx->ply->angle) * PLAYER_SPEED;
-		move_y = -sin(mlx->ply->angle) * PLAYER_SPEED;
+		move_x = -cos(mlx->ply->angle) * mlx->ply->speed;
+		move_y = -sin(mlx->ply->angle) * mlx->ply->speed;
 		mlx->ply->u_d = 0;
 	}
 	move_player(mlx, move_x, move_y); // move the player

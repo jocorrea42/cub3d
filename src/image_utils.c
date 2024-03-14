@@ -30,7 +30,7 @@ int	*create_new_color(char *path)
 	int		i;
 	int		*color;
 
-	color = (int *) safe_calloc(1, sizeof(int)); 
+	color = (int *) safe_calloc(1, sizeof(int));
 	tok = ft_strtok(path, ",");
 	i = 0;
 	while (tok)
@@ -63,6 +63,13 @@ t_img	*new_file_img(char *path, t_cub *mlx)
 	else
 		img->addr = mlx_get_data_addr(img->img_ptr, &(img->bpp), &(img->l_len),
 				&(img->endian));
+	if (!mlx->tile)
+	{
+		mlx->tile = (int *) safe_calloc (1, sizeof(int));
+		*mlx->tile = img->w;
+	}
+	if (*mlx->tile != img->w)
+		ft_perror(EINVAL, "Tiles with different sizes");
 	return (img);
 }
 
