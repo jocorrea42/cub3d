@@ -78,7 +78,7 @@ void	add_color(char *tok, char *info, t_cub *mlx)
 		mlx->textures->floor = create_new_color(info);
 }
 
-void	check_texture_input(char *line, t_cub *mlx) // Case  F      17,    38,     64 not works
+void	check_texture_input(char *line, t_cub *mlx)
 {
 	char *tok;
 
@@ -142,8 +142,8 @@ void	parse_input(char *argv, t_cub *mlx)
 
 	(void)mlx;
 	i = 0;
-	tmp = ft_read(ft_open(argv)); // Currently read using split erases all empty lines. Change it?
-	while (tmp[i] && !is_textures_ok(mlx->textures)) // loop until all textures are filled
+	tmp = ft_read(ft_open(argv));
+	while (tmp[i] && !is_textures_ok(mlx->textures))
 	{
 		line = ft_strtrim(tmp[i], " \n");
 		if (line[0] != '\0')
@@ -151,16 +151,16 @@ void	parse_input(char *argv, t_cub *mlx)
 		free(line);
 		i++;
 	}
-	if (!tmp[i])
-		ft_perror(EINVAL, "No map");
 	while (tmp[i] && tmp[i][0] == '\0')
 		i++;
+	if (!tmp[i])
+		ft_perror(EINVAL, "No map");
 	create_square_map(tmp + i, mlx->dt);
 	clean_array(tmp);
 	get_map_size(mlx->dt);
 	check_valid_char(mlx->dt);
 	check_closed(mlx);
-	init_the_player(mlx); // init the player structure
+	init_the_player(mlx);
 	mlx->img->win_ptr = mlx_new_window(mlx->img->mlx_ptr, S_W, S_H, "cub3D");
 	if (!mlx->img->win_ptr)
 		ft_perror(ENOMEM, "mlx new window failed");

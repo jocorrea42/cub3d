@@ -49,7 +49,7 @@ char	**ft_read(int fd)
 	close(fd);
 	if (map_line == NULL)
 		ft_perror(EINVAL, "Empty map");
-	tmp = ft_strtrim(map_line, " \n");
+	tmp = safe_strtrim(map_line, " \n");
 	free(map_line);
 	map_line = tmp;
 	ret_arr = fake_split(map_line, '\n');

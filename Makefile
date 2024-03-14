@@ -6,9 +6,12 @@ LIBS_LINUX = -Lmlx_linux -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 LIBS_MACOS = -Lmlx -lmlx -framework OpenGL -framework AppKit
 
 # External libraries
-ft = libft/libft.a
-mlx_linux = mlx_linux/libmlx.a
-mlx_macos = mlx/libmlx.a
+FT = libft/libft.a
+ifeq ($(UNAME_S),Linux)
+	MLX := mlx_linux/libmlx.a
+else
+	MLX := mlx/libmlx.a
+endif
 
 # Folders
 SRC_DIR = src
@@ -41,16 +44,16 @@ else
 	LIBS := $(LIBS_MACOS)
 endif
 
-all: lib libmlx $(NAME)
+all: $(NAME)
 
-$(NAME): $(OBJ) $(ft) $(mlx_linux) $(mlx_macos)
+$(NAME): $(OBJ) $(FT) $(MLX)
 	$(CC) $(OBJ) -Llibft $(LIBS) -lft -o $(NAME)
 	@echo "Cub3d compiled!"
 
-lib: 
+$(FT): 
 	make -C libft
 
-libmlx:
+$(MLX):
 ifeq ($(UNAME_S),Linux)
 	make -C mlx_linux
 else

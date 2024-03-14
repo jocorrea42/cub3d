@@ -29,7 +29,7 @@ static int	ft_size_word(char const *s, char c, int i)
 	return (size);
 }
 
-static void	ft_str_free(char **strs, int j)
+static void	ft_str_free(char **strs, int j) // delete after safe substr
 {
 	while (j-- > 0)
 		free(strs[j]);
@@ -49,8 +49,8 @@ char	**fake_split(char const *s, char c)
 	strs = (char **)safe_calloc ((word + 1), sizeof(char *));
 	while (++j < word)
 	{
-		strs[j] = ft_substr(s, i, ft_size_word(s, c, i));
-		if (!(strs[j]))
+		strs[j] = ft_substr(s, i, ft_size_word(s, c, i)); //create safe substr
+		if (!(strs[j])) // delete after safe substr
 		{
 			ft_str_free(strs, j);
 			return (NULL);
