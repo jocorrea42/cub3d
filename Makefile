@@ -2,14 +2,16 @@ NAME = cub3d
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -MMD
-LIBS_LINUX = -Lmlx_linux -lmlx -L/usr/lib -lXext -lX11 -lm -lz
-LIBS_MACOS = -Lmlx -lmlx -framework OpenGL -framework AppKit
+LIBS = -Lmlx_linux -lmlx -L/usr/lib -lXext -lX11 -lm -lz
+MLX = mlx_linux/libmlx.a
+MLX_INCLUDE = -Imlx_linux
+UNAME_S := $(shell uname -s)
 
 # External libraries
-FT = libft/libft.a
-ifeq ($(UNAME_S),Linux)
-	MLX := mlx_linux/libmlx.a
-else
+ft = libft/libft.a
+ifneq ($(UNAME_S),Linux)
+	LIBS := $Lmlx -lmlx -framework OpenGL -framework AppKit
+	MLX_INCLUDE := Imlx
 	MLX := mlx/libmlx.a
 endif
 
@@ -31,34 +33,26 @@ DEP = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.d))
 # Compile SRC files and move to folders
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c cub3d.h
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I. -Imlx -Ilibft -O3 -c $< -o $@
+	@$(CC) $(CFLAGS) -I. $(MLX_INCLUDE) -Ilibft -O3 -c $< -o $@
 	@mkdir -p $(DEP_DIR)
 	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/
 
 # Determine OS
 UNAME_S := $(shell uname -s)
 
-ifeq ($(UNAME_S),Linux)
-	LIBS := $(LIBS_LINUX)
-else
-	LIBS := $(LIBS_MACOS)
-endif
+all: lib libmlx $(NAME)
 
-all: $(NAME)
-
-$(NAME): $(OBJ) $(FT) $(MLX)
+$(NAME): $(OBJ) $(ft) $(MLX)
 	$(CC) $(OBJ) -Llibft $(LIBS) -lft -o $(NAME)
 	@echo "Cub3d compiled!"
 
-$(FT): 
-	make -C libft
+lib: 
+	@make -s -C libft
+	@echo "Libft compiled"
 
-$(MLX):
-ifeq ($(UNAME_S),Linux)
-	make -C mlx_linux
-else
-	make -C mlx
-endif
+libmlx:
+	@make -s -C $(dir $(MLX))
+	@echo "Mlx compiled"
 
 clean:
 	rm -rf $(OBJ_DIR) $(DEP_DIR)
@@ -67,13 +61,9 @@ clean:
 fclean:
 	rm -rf $(NAME) $(OBJ_DIR) $(DEP_DIR)
 	make fclean -C libft
-ifeq ($(UNAME_S),Linux)
-	make clean -C mlx_linux
-else
-	make clean -C mlx
-endif
+	make clean -C $(dir $(MLX))
 
-re:	fclean all
+re: fclean all
 
 -include $(DEP)
 

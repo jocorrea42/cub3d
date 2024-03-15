@@ -40,6 +40,7 @@ void	init_structs(t_cub *mlx) // init the data structure
 	mlx->ply = (t_player *) safe_calloc(1, sizeof(t_player));
 	mlx->ray = (t_ray *)safe_calloc(1, sizeof(t_ray));
 	mlx->textures = (t_tex *) safe_calloc (1, sizeof(t_tex));
+	mlx->tile = NULL;
 	mlx->img = new_program();
 }
 
