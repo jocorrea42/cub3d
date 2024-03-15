@@ -12,15 +12,14 @@
 
 #include "cub3d.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_cub mlx;
+	t_cub	mlx;
 
 	if (argc != 2)
 		ft_perror(EINVAL, "./so_long [MAP.cub]");
-	init_structs(&mlx); // init the data structure
+	init_structs(&mlx);
 	parse_input(argv[1], &mlx);
-	//exit(17);
- 	start_the_game(&mlx); // start the game
-	return 0;
+	start_the_game(&mlx);
+	return (0);
 }

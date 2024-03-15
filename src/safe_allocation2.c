@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   safe_allocation.c                                  :+:      :+:    :+:   */
+/*   safe_allocation2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: davifern <davifern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:36:14 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/02/02 11:12:31 by davifern         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:47:32 by davifern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,67 +14,48 @@
 #include <stdio.h>
 #include <libft.h>
 
-void	*safe_malloc(size_t len)
-{
-	void	*p;
-
-	p = malloc(len);
-	if (!p)
-	{
-		perror("malloc failed");
-		exit(EXIT_FAILURE);
-	}
-	return (p);
-}
-
-char	*safe_itoa(int n)
+char	*safe_strjoin(char const *s1, char const *s2)
 {
 	char	*ret;
 
-	ret = ft_itoa(n);
+	ret = ft_strjoin(s1, s2);
 	if (!ret)
 	{
-		perror("ft_itoa failed");
+		perror("ft_strjoin failed");
 		exit(EXIT_FAILURE);
 	}
 	return (ret);
 }
 
-char	*safe_strdup(const char *s1)
+char	*safe_strtrim(char const *s1, char const *set)
 {
 	char	*ret;
 
-	ret = ft_strdup(s1);
+	ret = ft_strtrim(s1, set);
 	if (!ret)
 	{
-		perror("ft_strdup failed");
+		perror("ft_strtrim failed");
 		exit(EXIT_FAILURE);
 	}
 	return (ret);
 }
 
-void	*safe_calloc(size_t count, size_t size)
+char	*safe_substr(char const *s, unsigned int start, size_t len)
 {
-	void	*p;
+	char	*ret;
 
-	p = ft_calloc(count, size);
-	if (!p)
-	{
-		perror("ft_calloc failed");
-		exit(EXIT_FAILURE);
-	}
-	return (p);
-}
-
-char	**safe_split(char const *s, char c)
-{
-	char	**ret;
-
-	ret = ft_split(s, c);
+	ret = ft_substr(s, start, len);
 	if (!ret)
 	{
-		perror("ft_split failed");
+		perror("ft_substr failed");
 		exit(EXIT_FAILURE);
 	}
 	return (ret);
+}
+
+void	*ft_free(void *ptr)
+{
+	if (ptr)
+		free(ptr);
+	return (NULL);
 }

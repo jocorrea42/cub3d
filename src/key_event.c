@@ -11,65 +11,41 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "keys.h"
 
-int read_keys(int key_pressed, void *param)
+int	read_keys(int key_pressed, void *param)
 {
-	t_cub *cub;
+	t_cub	*cub;
 
 	cub = (t_cub *)param;
-	if (key_pressed == 65364 || key_pressed == 115 || key_pressed == 1 || key_pressed == 125) // move down
-		return (cub->ply->u_d = -1);
-	else if (key_pressed == 65362 || key_pressed == 119 || key_pressed == 13 || key_pressed == 126) // move up
-		return (cub->ply->u_d = 1);
-	else if (key_pressed == 100 || key_pressed == 2) //move right
-		return (cub->ply->l_r = 1);
-	else if (key_pressed == 97 || key_pressed == 0)//move left
-		return (cub->ply->l_r = -1);
-	else if (key_pressed == 65361 || key_pressed == 123) // rotate left
+	if (key_pressed == DOWN_LINUX || key_pressed == DOWN_MAC
+		|| key_pressed == S_LINUX || key_pressed == S_MAC)
+		return (cub->ply->direction = DOWN);
+	else if (key_pressed == UP_LINUX || key_pressed == UP_MAC
+		|| key_pressed == W_LINUX || key_pressed == W_MAC)
+		return (cub->ply->direction = UP);
+	else if (key_pressed == D_LINUX || key_pressed == D_MAC)
+		return (cub->ply->direction = RIGHT);
+	else if (key_pressed == A_LINUX || key_pressed == A_MAC)
+		return (cub->ply->direction = LEFT);
+	else if (key_pressed == LEFT_LINUX || key_pressed == LEFT_MAC)
 		return (cub->ply->rot = -1);
-	else if (key_pressed == 65363 || key_pressed == 124) // rotate right
+	else if (key_pressed == RIGHT_LINUX || key_pressed == RIGHT_MAC)
 		return (cub->ply->rot = 1);
-	else if (key_pressed == 65307 || key_pressed == 53) // ESC Linux
-		exit_win(cub->img);
+	else if (key_pressed == ESC_LINUX || key_pressed == ESC_MAC)
+		exit_win();
 	return (0);
 }
 
-void hook(t_cub *mlx, double move_x, double move_y)
+void	hook(t_cub *mlx)
 {
-	if (mlx->ply->rot == 1) // rotate right
-		rotate_player(mlx, 1);
-	if (mlx->ply->rot == -1) // rotate left
-		rotate_player(mlx, 0);
-	if (mlx->ply->l_r == 1) // move right
-	{
-		move_x = -sin(mlx->ply->angle) * mlx->ply->speed;
-		move_y = cos(mlx->ply->angle) * mlx->ply->speed;
-		mlx->ply->l_r = 0;
-	}
-	if (mlx->ply->l_r == -1) // move left
-	{
-		move_x = sin(mlx->ply->angle) * mlx->ply->speed;
-		move_y = -cos(mlx->ply->angle) * mlx->ply->speed;
-		mlx->ply->l_r = 0;
-	}
-	if (mlx->ply->u_d == 1) // move up
-	{
-		move_x = cos(mlx->ply->angle) * mlx->ply->speed;
-		move_y = sin(mlx->ply->angle) * mlx->ply->speed;
-		mlx->ply->u_d = 0;
-	}
-	if (mlx->ply->u_d == -1) // move down
-	{
-		move_x = -cos(mlx->ply->angle) * mlx->ply->speed;
-		move_y = -sin(mlx->ply->angle) * mlx->ply->speed;
-		mlx->ply->u_d = 0;
-	}
-	move_player(mlx, move_x, move_y); // move the player
+	if (mlx->ply->rot)
+		rotate_player(mlx->ply);
+	if (mlx->ply->direction != NONE)
+		general_move_player(mlx);
 }
 
-int exit_win(t_img *window)
+int	exit_win(void)
 {
-	if (window)
-		mlx_destroy_window(window->mlx_ptr, window->win_ptr);
 	exit(EXIT_SUCCESS);
 }

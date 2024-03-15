@@ -38,7 +38,7 @@ char	*ft_strcat(char *s1, char *s2, int clean_it)
 	len2 = ft_strlen(s2);
 	if (!len1 && !len2)
 		return (NULL);
-	filepath = (char *) ft_calloc (1, len1 + len2 + 1);
+	filepath = (char *)ft_calloc(1, len1 + len2 + 1);
 	if (filepath == NULL)
 		return (NULL);
 	ft_memcpy(filepath, s1, len1);
@@ -56,7 +56,7 @@ void	check_extension(char *filename)
 
 int	ft_open(char *filename)
 {
-	int		fd;
+	int	fd;
 
 	check_extension(filename);
 	fd = open(filename, O_RDONLY);

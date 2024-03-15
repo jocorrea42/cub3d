@@ -38,11 +38,20 @@
 # define EXTENSION ".cub"
 # define VALID_CHAR "01 NEWS"
 
+typedef enum {
+	NONE,
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+}	e_dir;
+
 typedef struct s_player // the player structure
 {
 	int		plyr_x;	  // player x position in pixels
 	int		plyr_y;	  // player y position in pixels
 	int		rot;	  // rotation flag
+	e_dir	direction;
 	int		l_r;	  // left right flag
 	int		u_d;	  // up down flag
 	double	angle; // player angle
@@ -83,8 +92,6 @@ typedef struct s_img
 	int		bpp;
 	int		endian;
 	int		l_len;
-	void	*mlx_ptr;
-	void	*win_ptr;
 	void	*img_ptr;
 	char	*addr;
 }			t_img;
@@ -103,6 +110,8 @@ typedef struct s_tex
 
 typedef struct s_cub // the mlx structure
 {
+	void		*mlx_ptr;
+	void		*win_ptr;
 	t_img		*img;	   // the image
 	t_ray		*ray;	   // the ray structure
 	t_data		*dt;	   // the data structure
@@ -122,8 +131,7 @@ typedef struct s_square
 	
 } 						t_square;
 
-int			exit_win(t_img *window);
-t_img		*new_program(void);
+t_img		*new_program(t_cub *mlx);
 void		my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
 void		cast_rays(t_cub *mlx);
 void		render_wall(t_cub *mlx, int ray);
@@ -131,12 +139,13 @@ float		nor_angle(float angle);
 int			unit_circle(float angle, char c);
 int			r_angle(int angle);
 double		fcos(int angle);
-void		hook(t_cub *mlx, double move_x, double move_y);
+void		hook(t_cub *mlx);
 int			read_keys(int key_pressed, void *param);
 void		ft_exit(t_cub *mlx);
-int			exit_win(t_img *window);
+int			exit_win(void);
 void		move_player(t_cub *mlx, double move_x, double move_y);
-void		rotate_player(t_cub *mlx, int i);
+void		rotate_player(t_player *player);
+void		general_move_player(t_cub *mlx);
 void		start_the_game(t_cub *mlx);
 
 unsigned int	get_pixel_img(t_img img, int x, int y);
@@ -164,6 +173,7 @@ void	ft_perror(int err, char *msg);
 void	*safe_calloc(size_t count, size_t size);
 char	*safe_strtrim(char const *s1, char const *set);
 char	*safe_strdup(const char *s1);
+char	*safe_substr(char const *s, unsigned int start, size_t len);
 
 /* Utils functions */
 char	*ft_strtok(char *input, const char *delim);

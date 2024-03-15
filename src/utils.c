@@ -12,7 +12,6 @@
 
 #include "cub3d.h"
 
-
 int	r_angle(int angle)
 {
 	return ((angle * S_W) / 60);
@@ -21,7 +20,7 @@ int	r_angle(int angle)
 double	fcos(int angle)
 {
 	static double	fcos[360 * S_W / 60];
-	int		i;
+	int				i;
 
 	if (fcos[r_angle(0)] > 1.0)
 		return (fcos[angle]);

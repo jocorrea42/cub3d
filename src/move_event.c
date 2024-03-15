@@ -12,55 +12,71 @@
 
 #include "cub3d.h"
 
-
-void rotate_player(t_cub *mlx, int i) // rotate the player
+void	rotate_player(t_player *player)
 {
-	if (i == 1)
+	if (player->rot == 1)
 	{
-		mlx->ply->angle += ROTATION_SPEED; // rotate right
-		if (mlx->ply->angle > 2 * M_PI)
-			mlx->ply->angle -= 2 * M_PI;
+		player->angle += ROTATION_SPEED;
+		if (player->angle > 2 * M_PI)
+			player->angle -= 2 * M_PI;
 	}
 	else
 	{
-		mlx->ply->angle -= ROTATION_SPEED; // rotate left
-		if (mlx->ply->angle < 0)
-			mlx->ply->angle += 2 * M_PI;
+		player->angle -= ROTATION_SPEED;
+		if (player->angle < 0)
+			player->angle += 2 * M_PI;
 	}
-	mlx->ply->rot = 0;
+	player->rot = 0;
 }
 
-void move_player(t_cub *mlx, double move_x, double move_y) // move the player
+void	general_move_player(t_cub *mlx)
 {
-	int map_grid_y;
-	int map_grid_x;
-	int new_x;
-	int new_y;
+	if (mlx->ply->direction == RIGHT)
+		move_player(mlx, -sin(mlx->ply->angle) * mlx->ply->speed,
+			cos(mlx->ply->angle) * mlx->ply->speed);
+	if (mlx->ply->direction == LEFT)
+		move_player(mlx, sin(mlx->ply->angle) * mlx->ply->speed,
+			-cos(mlx->ply->angle) * mlx->ply->speed);
+	if (mlx->ply->direction == UP)
+		move_player(mlx, cos(mlx->ply->angle) * mlx->ply->speed,
+			sin(mlx->ply->angle) * mlx->ply->speed);
+	if (mlx->ply->direction == DOWN)
+		move_player(mlx, -cos(mlx->ply->angle) * mlx->ply->speed,
+			-sin(mlx->ply->angle) * mlx->ply->speed);
+	mlx->ply->direction = NONE;
+}
 
-	new_x = roundf(mlx->ply->plyr_x + move_x); // get the new x position
-	new_y = roundf(mlx->ply->plyr_y + move_y); // get the new y position
-	map_grid_x = (new_x / *mlx->tile);		   // get the x position in the map
-	map_grid_y = (new_y / *mlx->tile);		   // get the y position in the map
-	if (mlx->dt->map2d[map_grid_y][map_grid_x] != '1' &&
-		(mlx->dt->map2d[map_grid_y][mlx->ply->plyr_x / *mlx->tile] != '1' &&
-		 mlx->dt->map2d[mlx->ply->plyr_y / *mlx->tile][map_grid_x] != '1')) // check the wall hit and the diagonal wall hit
+void	move_player(t_cub *mlx, double move_x, double move_y)
+{
+	int	new_x;
+	int	new_y;
+
+	new_x = roundf(mlx->ply->plyr_x + move_x);
+	new_y = roundf(mlx->ply->plyr_y + move_y);
+	if (mlx->dt->map2d[new_y / *mlx->tile][new_x / *mlx->tile] != '1'
+		&& (mlx->dt->map2d[new_y / *mlx->tile]
+		[mlx->ply->plyr_x / *mlx->tile] != '1'
+		&& mlx->dt->map2d[mlx->ply->plyr_y / *mlx->tile]
+		[new_x / *mlx->tile] != '1'))
 	{
-		mlx->ply->plyr_x = new_x; // move the player
-		mlx->ply->plyr_y = new_y; // move the player
+		mlx->ply->plyr_x = new_x;
+		mlx->ply->plyr_y = new_y;
 	}
 }
 
-void ft_exit(t_cub *mlx)   // exit the game
+void	ft_exit(t_cub *mlx)
 {
- int i = 0;
- while (mlx->dt->map2d[i])
-  free(mlx->dt->map2d[i++]); // free the map line by line
- free(mlx->dt->map2d); // free the map
- free(mlx->dt); // free the data structure
- free(mlx->ply); // free the player structure
- free(mlx->ray); // free the ray structure
- mlx_destroy_image(mlx->img->mlx_ptr, mlx->img->img_ptr); // delete the image
- mlx_destroy_window(mlx->img->mlx_ptr, mlx->img->win_ptr); // terminate the mlx pointer
- printf("Game closed\n"); // print the message
- exit(0); // exit the game
+	int	i;
+
+	i = 0;
+	while (mlx->dt->map2d[i])
+		free(mlx->dt->map2d[i++]);
+	free(mlx->dt->map2d);
+	free(mlx->dt);
+	free(mlx->ply);
+	free(mlx->ray);
+	mlx_destroy_image(mlx->mlx_ptr, mlx->img->img_ptr);
+	mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
+	printf("Game closed\n");
+	exit(0);
 }

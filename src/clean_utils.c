@@ -30,4 +30,3 @@ void	clean_array(void *array)
 		cast = NULL;
 	}
 }
-

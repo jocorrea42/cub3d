@@ -19,7 +19,7 @@ char	*fake_gnl(int fd)
 	int		read_result;
 
 	str = NULL;
-	tmp = (char *) safe_calloc (1, sizeof(char) * 2);
+	tmp = (char *)safe_calloc(1, sizeof(char) * 2);
 	read_result = read(fd, tmp, 1);
 	while (read_result > 0)
 	{

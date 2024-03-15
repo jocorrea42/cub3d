@@ -12,20 +12,16 @@
 
 #include "cub3d.h"
 
-void	init_the_player(t_cub *mlx) // init the player structure
+void	init_the_player(t_cub *mlx)
 {
 	mlx->ply->plyr_x = mlx->dt->p_x * *mlx->tile + *mlx->tile / 2;
-		// player x position in pixels in the center of the tile
 	mlx->ply->plyr_y = mlx->dt->p_y * *mlx->tile + *mlx->tile / 2;
-		// player y position in pixels in the center of the tile
-	mlx->ply->fov_rd = (FOV * M_PI) / 180;                       
-		// field of view in radians
-	mlx->ply->angle = mlx->dt->p_a;                              // player angle
-																// the rest of the variables are initialized to zero by calloc
-	mlx->ply->speed = *mlx->tile / 2;
+	mlx->ply->fov_rd = (FOV * M_PI) / 180;
+	mlx->ply->angle = mlx->dt->p_a;
+	mlx->ply->speed = *mlx->tile / 3;
 }
 
-void print_array(char **arr) // DEBUG FUNCTION -> DELETE
+void	print_array(char **arr) // DEBUG FUNCTION -> DELETE
 {
 	while (*arr)
 	{
@@ -34,19 +30,20 @@ void print_array(char **arr) // DEBUG FUNCTION -> DELETE
 	}
 }
 
-void	init_structs(t_cub *mlx) // init the data structure
+void	init_structs(t_cub *mlx)
 {
-	mlx->dt = (t_data *) safe_calloc(1, sizeof(t_data)); // init the data structure
-	mlx->ply = (t_player *) safe_calloc(1, sizeof(t_player));
+	mlx->dt = (t_data *)safe_calloc(1, sizeof(t_data));
+	mlx->ply = (t_player *)safe_calloc(1, sizeof(t_player));
 	mlx->ray = (t_ray *)safe_calloc(1, sizeof(t_ray));
-	mlx->textures = (t_tex *) safe_calloc (1, sizeof(t_tex));
+	mlx->textures = (t_tex *)safe_calloc(1, sizeof(t_tex));
 	mlx->tile = NULL;
-	mlx->img = new_program();
+	mlx->img = new_program(mlx);
 }
 
-int		is_textures_ok(t_tex *tex)
+int	is_textures_ok(t_tex *tex)
 {
-	return (tex->ceiling && tex->floor && tex->north && tex->south && tex->west && tex->east);
+	return (tex->ceiling && tex->floor && tex->north && tex->south && tex->west
+		&& tex->east);
 }
 
 void	add_texture(char *tok, char *info, t_cub *mlx)
@@ -82,13 +79,19 @@ void	add_color(char *tok, char *info, t_cub *mlx)
 
 void	check_texture_input(char *line, t_cub *mlx)
 {
-	char *tok;
+	char	*tok;
 
+	if (line[0] == '\0')
+	{
+		free(line);
+		return ;
+	}
 	tok = ft_strtok(line, " ");
 	if (!ft_strcmp(tok, "C") || !ft_strcmp(tok, "F"))
 		add_color(tok, ft_strtok(NULL, "\0"), mlx);
 	else
 		add_texture(tok, ft_strtok(NULL, "\0"), mlx);
+	free(line);
 }
 
 void	create_square_map(char **tmp, t_data *dt)
@@ -106,51 +109,25 @@ void	create_square_map(char **tmp, t_data *dt)
 			width = ft_strlen(tmp[height]);
 		height++;
 	}
-	dt->map2d = (char **) safe_calloc (height + 1, sizeof(char *));
+	dt->map2d = (char **)safe_calloc(height + 1, sizeof(char *));
 	while (--height >= 0)
 	{
-		dt->map2d[height] = (char *) safe_calloc (1, sizeof(char) * (width + 1));
+		dt->map2d[height] = (char *)safe_calloc(1, sizeof(char) * (width + 1));
 		ft_memset(dt->map2d[height], '0', width);
 		ft_memcpy(dt->map2d[height], tmp[height], ft_strlen(tmp[height]));
 	}
 }
-int	get_t(int trgb)
-{
-	return ((trgb >> 24) & 0xFF);
-}
-
-int	get_r(int trgb)
-{
-	return ((trgb >> 16) & 0xFF);
-}
-
-int	get_g(int trgb)
-{
-	return ((trgb >> 8) & 0xFF);
-}
-
-int	get_b(int trgb)
-{
-	return (trgb & 0xFF);
-}
-
-
 
 void	parse_input(char *argv, t_cub *mlx)
 {
 	char	**tmp;
-	char	*line;
 	int		i;
 
-	(void)mlx;
 	i = 0;
 	tmp = ft_read(ft_open(argv));
 	while (tmp[i] && !is_textures_ok(mlx->textures))
 	{
-		line = ft_strtrim(tmp[i], " \n");
-		if (line[0] != '\0')
-			check_texture_input(line, mlx);
-		free(line);
+		check_texture_input(safe_strtrim(tmp[i], " "), mlx);
 		i++;
 	}
 	while (tmp[i] && tmp[i][0] == '\0')
@@ -163,40 +140,35 @@ void	parse_input(char *argv, t_cub *mlx)
 	check_valid_char(mlx->dt);
 	check_closed(mlx);
 	init_the_player(mlx);
-	mlx->img->win_ptr = mlx_new_window(mlx->img->mlx_ptr, S_W, S_H, "cub3D");
-	if (!mlx->img->win_ptr)
+	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, S_W, S_H, "cub3D");
+	if (!mlx->win_ptr)
 		ft_perror(ENOMEM, "mlx new window failed");
 }
 
-
 void	draw_image(t_cub *mlx)
 {
-	hook(mlx, 0, 0);                                                                    
-		// hook the player
-	cast_rays(mlx);                                                                     
-		// cast the rays
-	mlx_put_image_to_window(mlx->img->mlx_ptr, mlx->img->win_ptr,
-		mlx->img->img_ptr, 0, 0); // put the image to the window
+	hook(mlx);
+	cast_rays(mlx);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr,
+		mlx->img->img_ptr, 0, 0);
 }
 
-int	game_loop(void *ml) // game loop
+int	game_loop(void *ml)
 {
-	t_cub *mlx;
+	t_cub	*mlx;
 
-	mlx = ml;                                           
-		// cast to the mlx structure
-	if (mlx->ply->l_r || mlx->ply->u_d || mlx->ply->rot)
-		// check if player moved. If not does not draw another image
+	mlx = ml;
+	if (mlx->ply->direction != NONE || mlx->ply->rot)
 		draw_image(mlx);
 	return (0);
 }
 
-void	start_the_game(t_cub *mlx) // start the game
+void	start_the_game(t_cub *mlx)
 {
 	draw_image(mlx);
-	mlx_loop_hook(mlx->img->mlx_ptr, &game_loop, mlx);
-	mlx_hook(mlx->img->win_ptr, 2, 1L << 0, read_keys, mlx);
-	mlx_hook(mlx->img->win_ptr, 17, 0, exit_win, mlx->img);
-	mlx_loop(mlx->img->mlx_ptr); // mlx loop
-	ft_exit(mlx);             // exit the game
+	mlx_loop_hook(mlx->mlx_ptr, &game_loop, mlx);
+	mlx_hook(mlx->win_ptr, 2, 1L << 0, read_keys, mlx);
+	mlx_hook(mlx->win_ptr, 17, 0, exit_win, mlx->img);
+	mlx_loop(mlx->mlx_ptr);
+	ft_exit(mlx);
 }

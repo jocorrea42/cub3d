@@ -36,7 +36,6 @@ void	check_quantities(t_data *data)
 		ft_perror(EINVAL, "More than one player found");
 	if (data->n_p < 1)
 		ft_perror(EINVAL, "No player found");
-
 }
 
 int	check_char(char c)

@@ -30,7 +30,7 @@ int	*create_new_color(char *path)
 	int		i;
 	int		*color;
 
-	color = (int *) safe_calloc(1, sizeof(int));
+	color = (int *)safe_calloc(1, sizeof(int));
 	tok = ft_strtok(path, ",");
 	i = 0;
 	while (tok)
@@ -56,8 +56,8 @@ t_img	*new_file_img(char *path, t_cub *mlx)
 	if (ft_strcmp(".xpm", ft_strrchr(path, '.')))
 		ft_perror(EINVAL, "Image must be .xpm");
 	img = safe_calloc(1, sizeof(t_img));
-	img->img_ptr = mlx_xpm_file_to_image(mlx->img->mlx_ptr, path,
-			&img->w, &img->h);
+	img->img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, path, &img->w,
+			&img->h);
 	if (!img->img_ptr)
 		ft_perror(EINVAL, "Cannot load image");
 	else
@@ -65,16 +65,15 @@ t_img	*new_file_img(char *path, t_cub *mlx)
 				&(img->endian));
 	if (!mlx->tile)
 	{
-		mlx->tile = (int *) safe_calloc (1, sizeof(int));
+		mlx->tile = (int *)safe_calloc(1, sizeof(int));
 		*mlx->tile = img->w;
 	}
-	if (*mlx->tile != img->w)
-		ft_perror(EINVAL, "Tiles with different sizes");
+	if (*mlx->tile > img->w)
+		*mlx->tile = img->w;
 	return (img);
 }
 
-unsigned int	get_pixel_img(t_img img, int x, int y)
+/* unsigned int	get_pixel_img(t_img img, int x, int y)
 {
-	return (*(unsigned int *)((img.addr
-			+ (y * img.l_len) + (x * img.bpp / 8))));
-}
+	return (*(unsigned int *)((img.addr + (y * img.l_len) + (x * img.bpp / 8))));
+} */
