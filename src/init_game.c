@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anyela <anyela@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 10:01:55 by anyela            #+#    #+#             */
-/*   Updated: 2024/03/06 12:57:24 by anyela           ###   ########.fr       */
+/*   Updated: 2024/03/16 14:07:33 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	game_loop(void *ml)
 	t_cub	*mlx;
 
 	mlx = ml;
-	if (mlx->ply->direction != NONE || mlx->ply->rot)
+	if (mlx->pl->direction != NONE || mlx->pl->rot)
 		draw_image(mlx);
 	return (0);
 }

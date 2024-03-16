@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 10:16:57 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/03/16 10:16:59 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/03/16 14:12:56 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	init_the_player(t_cub *mlx)
 {
-	mlx->ply->plyr_x = mlx->dt->p_x * *mlx->tile + *mlx->tile / 2;
-	mlx->ply->plyr_y = mlx->dt->p_y * *mlx->tile + *mlx->tile / 2;
-	mlx->ply->fov_rd = (FOV * M_PI) / 180;
-	mlx->ply->angle = mlx->dt->p_a;
-	mlx->ply->speed = *mlx->tile / 3;
+	mlx->pl->pl_x = mlx->dt->p_x * *mlx->tile + *mlx->tile / 2;
+	mlx->pl->pl_y = mlx->dt->p_y * *mlx->tile + *mlx->tile / 2;
+	mlx->pl->fov_rd = (FOV * M_PI) / 180;
+	mlx->pl->angle = mlx->dt->p_a;
+	mlx->pl->speed = *mlx->tile / 3;
 }
 
 void	parse_input(char *argv, t_cub *mlx)
@@ -51,7 +51,7 @@ void	parse_input(char *argv, t_cub *mlx)
 void	init_structs(t_cub *mlx)
 {
 	mlx->dt = (t_data *)safe_calloc(1, sizeof(t_data));
-	mlx->ply = (t_player *)safe_calloc(1, sizeof(t_player));
+	mlx->pl = (t_player *)safe_calloc(1, sizeof(t_player));
 	mlx->ray = (t_ray *)safe_calloc(1, sizeof(t_ray));
 	mlx->textures = (t_tex *)safe_calloc(1, sizeof(t_tex));
 	mlx->tile = NULL;

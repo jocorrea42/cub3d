@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_event.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anyela <anyela@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 09:50:55 by anyela            #+#    #+#             */
-/*   Updated: 2024/02/28 10:00:22 by anyela           ###   ########.fr       */
+/*   Updated: 2024/03/16 14:10:34 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,19 @@ void	rotate_player(t_player *player)
 
 void	general_move_player(t_cub *mlx)
 {
-	if (mlx->ply->direction == RIGHT)
-		move_player(mlx, -sin(mlx->ply->angle) * mlx->ply->speed,
-			cos(mlx->ply->angle) * mlx->ply->speed);
-	if (mlx->ply->direction == LEFT)
-		move_player(mlx, sin(mlx->ply->angle) * mlx->ply->speed,
-			-cos(mlx->ply->angle) * mlx->ply->speed);
-	if (mlx->ply->direction == UP)
-		move_player(mlx, cos(mlx->ply->angle) * mlx->ply->speed,
-			sin(mlx->ply->angle) * mlx->ply->speed);
-	if (mlx->ply->direction == DOWN)
-		move_player(mlx, -cos(mlx->ply->angle) * mlx->ply->speed,
-			-sin(mlx->ply->angle) * mlx->ply->speed);
-	mlx->ply->direction = NONE;
+	if (mlx->pl->direction == RIGHT)
+		move_player(mlx, -sin(mlx->pl->angle) * mlx->pl->speed,
+			cos(mlx->pl->angle) * mlx->pl->speed);
+	if (mlx->pl->direction == LEFT)
+		move_player(mlx, sin(mlx->pl->angle) * mlx->pl->speed,
+			-cos(mlx->pl->angle) * mlx->pl->speed);
+	if (mlx->pl->direction == UP)
+		move_player(mlx, cos(mlx->pl->angle) * mlx->pl->speed,
+			sin(mlx->pl->angle) * mlx->pl->speed);
+	if (mlx->pl->direction == DOWN)
+		move_player(mlx, -cos(mlx->pl->angle) * mlx->pl->speed,
+			-sin(mlx->pl->angle) * mlx->pl->speed);
+	mlx->pl->direction = NONE;
 }
 
 void	move_player(t_cub *mlx, double move_x, double move_y)
@@ -51,16 +51,16 @@ void	move_player(t_cub *mlx, double move_x, double move_y)
 	int	new_x;
 	int	new_y;
 
-	new_x = roundf(mlx->ply->plyr_x + move_x);
-	new_y = roundf(mlx->ply->plyr_y + move_y);
+	new_x = roundf(mlx->pl->pl_x + move_x);
+	new_y = roundf(mlx->pl->pl_y + move_y);
 	if (mlx->dt->map2d[new_y / *mlx->tile][new_x / *mlx->tile] != '1'
 		&& (mlx->dt->map2d[new_y / *mlx->tile]
-		[mlx->ply->plyr_x / *mlx->tile] != '1'
-		&& mlx->dt->map2d[mlx->ply->plyr_y / *mlx->tile]
+		[mlx->pl->pl_x / *mlx->tile] != '1'
+		&& mlx->dt->map2d[mlx->pl->pl_y / *mlx->tile]
 		[new_x / *mlx->tile] != '1'))
 	{
-		mlx->ply->plyr_x = new_x;
-		mlx->ply->plyr_y = new_y;
+		mlx->pl->pl_x = new_x;
+		mlx->pl->pl_y = new_y;
 	}
 }
 
@@ -73,7 +73,7 @@ void	ft_exit(t_cub *mlx)
 		free(mlx->dt->map2d[i++]);
 	free(mlx->dt->map2d);
 	free(mlx->dt);
-	free(mlx->ply);
+	free(mlx->pl);
 	free(mlx->ray);
 	mlx_destroy_image(mlx->mlx_ptr, mlx->img->img_ptr);
 	mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);

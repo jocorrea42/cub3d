@@ -3,32 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anyela <anyela@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 09:43:43 by anyela            #+#    #+#             */
-/*   Updated: 2024/03/04 11:52:16 by anyela           ###   ########.fr       */
+/*   Updated: 2024/03/16 14:02:51 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	r_angle(int angle)
+float	nor_angle(float angle)
 {
-	return ((angle * S_W) / 60);
+	if (angle < 0)
+		angle += (2 * M_PI);
+	if (angle > (2 * M_PI))
+		angle -= (2 * M_PI);
+	return (angle);
 }
 
-double	fcos(int angle)
+int	unit_circle(float angle, char c)
 {
-	static double	fcos[360 * S_W / 60];
-	int				i;
-
-	if (fcos[r_angle(0)] > 1.0)
-		return (fcos[angle]);
-	i = 0;
-	while (i < r_angle(360))
-	{
-		fcos[i] = cos(i * M_PI / r_angle(180)) + 0.1;
-		i++;
-	}
-	return (fcos[angle]);
+	if (c == 'x' && (angle > 0 && angle < M_PI))
+		return (1);
+	else if (c == 'y' && (angle > (M_PI_2) && angle < (3 * M_PI_2)))
+		return (1);
+	return (0);
 }

@@ -23,7 +23,7 @@ INC_DIR = inc
 
 # Source files
 SRC = image_utils.c init_game.c key_event.c main.c \
-	move_event.c raycast.c utils.c init_data.c\
+	move_event.c raycast.c utils.c init_data.c draw.c\
 	win.c ft_perror.c safe_allocation.c read_utils.c \
 	open_utils.c check_map.c ft_strtok.c check_closed.c \
 	clean_utils.c fake_split.c safe_allocation2.c parse_textures.c
@@ -47,7 +47,7 @@ all: lib libmlx $(NAME)
 $(NAME): $(OBJ) $(ft) $(MLX)
 	$(CC) $(OBJ) -Llibft $(LIBS) -lft -o $(NAME)
 
-lib: 
+lib:
 	make -C libft
 
 libmlx:
