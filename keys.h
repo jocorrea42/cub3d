@@ -30,7 +30,7 @@
 # define W_MAC 13
 # define S_MAC 1
 # define A_MAC 0
-# define D_MAC 3
+# define D_MAC 2
 # define ESC_MAC 53
 
 #endif

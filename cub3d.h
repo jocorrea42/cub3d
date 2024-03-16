@@ -151,8 +151,10 @@ void		start_the_game(t_cub *mlx);
 unsigned int	get_pixel_img(t_img img, int x, int y);
 
 /* Texture and color functions */
-int	*create_new_color(char *path);
-t_img			*new_file_img(char * path, t_cub *window);
+int		*create_new_color(char *path);
+t_img	*new_file_img(char * path, t_cub *window);
+int		is_textures_ok(t_tex *tex);
+void	check_texture_input(char *line, t_cub *mlx);
 
 
 /* Parsing functions */
@@ -164,6 +166,7 @@ void	parse_input(char *argv, t_cub *mlx);
 void	get_map_size(t_data *map);
 void	check_valid_char(t_data *data);
 void	check_closed(t_cub *data);
+void	create_square_map(char **tmp, t_data *dt);
 char    **fake_split(char const *s, char c);
 
 /* Errors functions */

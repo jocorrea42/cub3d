@@ -12,6 +12,30 @@
 
 #include "cub3d.h"
 
+void	create_square_map(char **tmp, t_data *dt)
+{
+	size_t	width;
+	int		height;
+
+	width = 0;
+	height = 0;
+	while (tmp[height])
+	{
+		if (tmp[height][0] == '\0')
+			ft_perror(EINVAL, "Space between map");
+		if (ft_strlen(tmp[height]) > width)
+			width = ft_strlen(tmp[height]);
+		height++;
+	}
+	dt->map2d = (char **)safe_calloc(height + 1, sizeof(char *));
+	while (--height >= 0)
+	{
+		dt->map2d[height] = (char *)safe_calloc(1, sizeof(char) * (width + 1));
+		ft_memset(dt->map2d[height], '0', width);
+		ft_memcpy(dt->map2d[height], tmp[height], ft_strlen(tmp[height]));
+	}
+}
+
 void	add_to_count(char c, t_data *data, int i, int j)
 {
 	if (c != '0' && c != '1' && c != ' ')
@@ -28,14 +52,6 @@ void	add_to_count(char c, t_data *data, int i, int j)
 		else if (c == 'E')
 			data->p_a = E;
 	}
-}
-
-void	check_quantities(t_data *data)
-{
-	if (data->n_p > 1)
-		ft_perror(EINVAL, "More than one player found");
-	if (data->n_p < 1)
-		ft_perror(EINVAL, "No player found");
 }
 
 int	check_char(char c)
@@ -70,7 +86,10 @@ void	check_valid_char(t_data *data)
 		}
 		i++;
 	}
-	check_quantities(data);
+	if (data->n_p > 1)
+		ft_perror(EINVAL, "More than one player found");
+	if (data->n_p < 1)
+		ft_perror(EINVAL, "No player found");
 }
 
 void	get_map_size(t_data *map)

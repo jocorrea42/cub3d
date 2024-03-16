@@ -10,8 +10,8 @@ UNAME_S := $(shell uname -s)
 # External libraries
 ft = libft/libft.a
 ifneq ($(UNAME_S),Linux)
-	LIBS := $Lmlx -lmlx -framework OpenGL -framework AppKit
-	MLX_INCLUDE := Imlx
+	LIBS := -Lmlx -lmlx -framework OpenGL -framework AppKit
+	MLX_INCLUDE := -Imlx
 	MLX := mlx/libmlx.a
 endif
 
@@ -23,17 +23,17 @@ INC_DIR = inc
 
 # Source files
 SRC = image_utils.c init_game.c key_event.c main.c \
-	move_event.c raycast.c utils.c \
+	move_event.c raycast.c utils.c init_data.c\
 	win.c ft_perror.c safe_allocation.c read_utils.c \
 	open_utils.c check_map.c ft_strtok.c check_closed.c \
-	clean_utils.c fake_split.c safe_allocation2.c
+	clean_utils.c fake_split.c safe_allocation2.c parse_textures.c
 
 # Object files
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 DEP = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.d))
 
 # Compile SRC files and move to folders
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c cub3d.h
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c cub3d.h keys.h Makefile
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -I. $(MLX_INCLUDE) -Ilibft -O3 -c $< -o $@
 	@mkdir -p $(DEP_DIR)
@@ -46,15 +46,12 @@ all: lib libmlx $(NAME)
 
 $(NAME): $(OBJ) $(ft) $(MLX)
 	$(CC) $(OBJ) -Llibft $(LIBS) -lft -o $(NAME)
-	@echo "Cub3d compiled!"
 
 lib: 
-	@make -s -C libft
-	@echo "Libft compiled"
+	make -C libft
 
 libmlx:
-	@make -s -C $(dir $(MLX))
-	@echo "Mlx compiled"
+	make -C $(dir $(MLX)) 2> /dev/null
 
 clean:
 	rm -rf $(OBJ_DIR) $(DEP_DIR)
