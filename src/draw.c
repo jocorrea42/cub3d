@@ -65,15 +65,18 @@ void	draw_wall(t_cub *mlx, int t_pix, int b_pix, double wall_h)
 
 	current_texture = get_texture(mlx);
 	img_addr = (unsigned int *)current_texture->addr;
-	factor = (double)current_texture->h / wall_h;
 	x_o = get_x_o(mlx, current_texture);
-	y_o = (t_pix - (S_H / 2) + (wall_h / 2)) * factor;
+	factor = (double)current_texture->h / wall_h;
+	if (isinf(wall_h)) // SEGFAULT when wall is inf -> wall is only inf when player enters wall...
+		y_o = 0;
+	else
+		y_o = (t_pix - (S_H / 2) + (wall_h / 2)) * factor;
 	if (y_o < 0)
 		y_o = 0;
 	while (t_pix < b_pix)
 	{
-		my_mlx_pixel_put(mlx, mlx->ray->index, t_pix, (img_addr[(int)y_o
-				* current_texture->w + (int)x_o]));
+		my_mlx_pixel_put(mlx, mlx->ray->index, t_pix,
+			(img_addr[(int)y_o * current_texture->w + (int)x_o]));
 		y_o += factor;
 		t_pix++;
 	}
@@ -88,8 +91,7 @@ void	render_wall(t_cub *mlx, int ray)
 	mlx->ray->distance *= cos(nor_angle(mlx->ray->ray_angle - mlx->pl->angle));
 	wall_h = (*mlx->tile / mlx->ray->distance) * ((S_W / 2)
 			/ tan(mlx->pl->fov_rd / 2));
-	b_pix = (S_H / 2) + (wall_h
-			/ 2);
+	b_pix = (S_H / 2) + (wall_h / 2);
 	t_pix = (S_H / 2) - (wall_h / 2);
 	if (b_pix > S_H)
 		b_pix = S_H;
