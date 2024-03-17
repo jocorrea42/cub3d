@@ -23,13 +23,11 @@
 # include <fcntl.h>
 # include <errno.h>
 
-# define S_W			1920	// screen width
-# define S_H			1080	// screen height
-# define TILE_SIZE		64		// tile size = s_w / size_map
-# define FOV			60		// field of view
-# define ROTATION_SPEED	0.045	// rotation speed
-// We will need to know where the player is pointing
-// to in the begining of the game.
+# define S_W			1920
+# define S_H			1080
+# define TILE_SIZE		64
+# define FOV			60
+# define ROTATION_SPEED	0.045
 # define E	0
 # define W	M_PI
 # define S	M_PI_2
@@ -38,7 +36,7 @@
 # define EXTENSION	".cub"
 # define VALID_CHAR	"01 NEWS"
 
-typedef enum s_dir
+typedef enum e_dir
 {
 	NONE,
 	UP,
@@ -47,41 +45,38 @@ typedef enum s_dir
 	RIGHT
 }	t_dir;
 
-typedef struct s_player// the player structure
+typedef struct s_player
 {
-	int		pl_x;	// player x position in pixels
-	int		pl_y;	// player y position in pixels
-	int		rot;	// rotation flag
+	int		pl_x;
+	int		pl_y;
+	int		rot;
 	t_dir	direction;
-	int		l_r;	// left right flag
-	int		u_d;	// up down flag
-	double	angle;	// player angle
-	float	fov_rd;	// field of view in radians
+	double	angle;
+	float	fov_rd;
 	int		speed;
 }	t_player;
 
-typedef struct s_ray // the ray structure
+typedef struct s_ray
 {
-	int		flag;		// flag for the wall
+	int		flag;
 	int		index;
-	double	ray_angle;	// ray angle
-	double	distance;	// distance to the wall
+	double	ray_angle;
+	double	distance;
 	double	horiz_x;
 	double	horiz_y;
 	double	vert_x;
 	double	vert_y;
 }	t_ray;
 
-typedef struct s_data// the data structure
+typedef struct s_data
 {
-	int		p_x;	// player x position in the map
-	int		p_y;	// player y position in the map
-	double	p_a;	// player initial angle
-	int		w_map;	// map width
-	int		h_map;	// map height
-	int		n_p;	// num player
-	char	**map2d;// the map
-	char	**tmp;
+	int		p_x;
+	int		p_y;
+	double	p_a;
+	int		w_map;
+	int		h_map;
+	int		n_p;
+	char	**map2d;
 }	t_data;
 
 typedef struct s_img
@@ -105,14 +100,14 @@ typedef struct s_tex
 	int		*ceiling;
 }	t_tex;
 
-typedef struct s_cub// the mlx structure
+typedef struct s_cub
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
-	t_img		*img;	// the image
-	t_ray		*ray;	// the ray structure
-	t_data		*dt;	// the data structure
-	t_player	*pl;	// the player structure
+	t_img		*img;
+	t_ray		*ray;
+	t_data		*dt;
+	t_player	*pl;
 	t_tex		*textures;
 	int			*tile;
 	int			hrz;
