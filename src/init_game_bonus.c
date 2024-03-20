@@ -23,6 +23,7 @@ int	mouse_move(int x, int y, void *param)
 		mlx->pl->rot = 1;
 	else if (x < S_W / 2)
 		mlx->pl->rot = -1;
+	mlx->pl->mouse_rot = 1;
 	mlx_mouse_move(mlx->mlx_ptr, mlx->win_ptr, S_W / 2, S_H / 2);
 	return (0);
 }
@@ -47,7 +48,6 @@ int	game_loop(void *ml)
 
 void	start_the_game(t_cub *mlx)
 {
-	mlx->textures->door = new_file_img("textures/lsulzbac.xpm", mlx);
 	draw_image(mlx);
 	mlx_mouse_hide(mlx->mlx_ptr, mlx->win_ptr);
 	mlx_mouse_move(mlx->mlx_ptr, mlx->win_ptr, S_W / 2, S_H / 2);

@@ -65,6 +65,7 @@ t_img	*new_file_img(char *path, t_cub *mlx)
 	else
 		img->addr = mlx_get_data_addr(img->img_ptr, &(img->bpp), &(img->l_len),
 				&(img->endian));
+	printf("w: %d, h: %d\n", img->w, img->h);
 	if (img->h != img->w)
 		ft_perror(EINVAL, "All textures must be squares");
 	if (!mlx->tile)
@@ -72,7 +73,7 @@ t_img	*new_file_img(char *path, t_cub *mlx)
 		mlx->tile = (int *)safe_calloc(1, sizeof(int));
 		*mlx->tile = img->h;
 	}
-	if (*mlx->tile !=img->h)
+	if (*mlx->tile != img->h)
 		ft_perror(EINVAL, "All textures must have the same size");
 	return (img);
 }

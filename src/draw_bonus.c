@@ -41,39 +41,37 @@ t_img	*get_texture(t_cub *mlx)
 		return (mlx->textures->door);
 }
 
-double	get_x_o(t_cub *mlx, t_img *c_tx)
+double	get_x_o(t_cub *mlx, t_img *current_texture)
 {
 	double	x_o;
 	
 	x_o = mlx->ray->vert_y;
 	if (mlx->ray->flag == 1 )
 		x_o = mlx->ray->horiz_x;
-	return (fmodf(x_o * (c_tx->w / *mlx->tile), c_tx->w));					
+	return (fmodf(x_o * (current_texture->w / *mlx->tile), current_texture->w));					
 }
 
 void	draw_wall(t_cub *mlx, int t_pix, int b_pix, double wall_h)
 {
 	double			x_o;
 	double			y_o;
-	unsigned int	*img;
+	unsigned int	*img_addr;
 	double			factor;
-	t_img			*c_tx;
+	t_img			*current_texture;
 
-	c_tx = get_texture(mlx);
-	img = (unsigned int *)c_tx->addr;
-	x_o = get_x_o(mlx, c_tx);
-	factor = (double)c_tx->h / wall_h;
+	current_texture = get_texture(mlx);
+	img_addr = (unsigned int *)current_texture->addr;
+	x_o = get_x_o(mlx, current_texture);
+	factor = (double)current_texture->h / wall_h;
 	y_o = (t_pix - (S_H / 2) + (wall_h / 2)) * factor;
-	if (isinf(wall_h) || y_o < 0) // SEGFAULT when wall is inf -> wall is only inf when player enters wall...
+	if (y_o < 0)
 		y_o = 0;
 	while (t_pix < b_pix)
 	{
-/* 		if ((c_tx->dir == 90 || c_tx->dir == 180) && y_o < c_tx->w && x_o < c_tx->h)
-			//if (((int)y_o * c_tx->w) + (int)c_tx->h - 1 - (int)x_o >= 0)
-			my_mlx_pixel_put(mlx, mlx->ray->index, t_pix++, img[((int)y_o * c_tx->w) + (int)c_tx->h - 1 - (int)x_o]);
-		else */
-		my_mlx_pixel_put(mlx, mlx->ray->index, t_pix++, img[(int)y_o * c_tx->w + (int)x_o]);
+		my_mlx_pixel_put(mlx, mlx->ray->index, t_pix,
+			(img_addr[(int)y_o * current_texture->w + (int)x_o]));
 		y_o += factor;
+		t_pix++;
 	}
 }
 
@@ -93,6 +91,7 @@ void	render_wall(t_cub *mlx, int ray)
 	if (t_pix < 0)
 		t_pix = 0;
 	mlx->ray->index = ray;
-	draw_wall(mlx, t_pix, b_pix, wall_h);
+	if (wall_h > 0)
+		draw_wall(mlx, t_pix, b_pix, wall_h);
 	draw_floor_ceiling(mlx, ray, t_pix, b_pix);
 }

@@ -61,6 +61,7 @@ typedef struct s_player
 	int		pl_x;
 	int		pl_y;
 	int		rot;
+	int		mouse_rot;
 	t_dir	direction;
 	double	angle;
 	float	fov_rd;

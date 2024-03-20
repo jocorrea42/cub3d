@@ -14,19 +14,25 @@
 
 void	rotate_player(t_player *player)
 {
+	double	rotation;
+
+	rotation = ROTATION_SPEED;
+	if (player->mouse_rot)
+		rotation /= 4;
 	if (player->rot == 1)
 	{
-		player->angle += ROTATION_SPEED;
+		player->angle += rotation;
 		if (player->angle > 2 * M_PI)
 			player->angle -= 2 * M_PI;
 	}
 	else
 	{
-		player->angle -= ROTATION_SPEED;
+		player->angle -= rotation;
 		if (player->angle < 0)
 			player->angle += 2 * M_PI;
 	}
 	player->rot = 0;
+	player->mouse_rot = 0;
 }
 
 void	general_move_player(t_cub *mlx)
