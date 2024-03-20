@@ -12,7 +12,13 @@
 
 #ifndef CUB3D_H
 # define CUB3D_H
-# include "./mlx/mlx.h"
+# ifdef __linux__
+#  include "./mlx_linux/mlx.h"
+# elif __APPLE__
+#  include "./mlx/mlx.h"
+# else
+#  error "OS not supported!"
+# endif
 # include "libft.h"
 # include "./libft/get_next_line.h"
 # include <unistd.h>
@@ -27,6 +33,7 @@
 # define S_H			1080
 # define TILE_SIZE		64
 # define FOV			60
+# define COLLISION_FOV	4
 # define ROTATION_SPEED	0.045
 # define E	0
 # define W	M_PI
@@ -34,7 +41,11 @@
 # define N	-M_PI_2
 
 # define EXTENSION	".cub"
-# define VALID_CHAR	"01 NEWS"
+# ifdef BONUS
+#  define VALID_CHAR	"0123 NEWS"
+# else
+#  define VALID_CHAR	"01 NEWS"
+# endif
 
 typedef enum e_dir
 {
@@ -64,8 +75,10 @@ typedef struct s_ray
 	double	distance;
 	double	horiz_x;
 	double	horiz_y;
+	int		horiz_hit;
 	double	vert_x;
 	double	vert_y;
+	int		vert_hit;
 }	t_ray;
 
 typedef struct s_data
@@ -96,6 +109,7 @@ typedef struct s_tex
 	t_img	*south;
 	t_img	*west;
 	t_img	*east;
+	t_img	*door;
 	int		*floor;
 	int		*ceiling;
 }	t_tex;
@@ -141,6 +155,8 @@ int				*create_new_color(char *path);
 t_img			*new_file_img(char *path, t_cub *window);
 int				is_textures_ok(t_tex *tex);
 void			check_texture_input(char *line, t_cub *mlx);
+void			invert_image_x(t_img *img);
+
 /* Parsing functions */
 int				ft_open(char *filename);
 char			*ft_strcat(char *s1, char *s2, int clean_it);
@@ -164,4 +180,8 @@ char			*ft_strtok(char *input, const char *delim);
 int				ft_strcmp(char *str1, char *str2);
 void			clean_array(void *array);
 void			print_array(char **arr);
+
+float	get_v_inter(t_cub *mlx, float angl);
+float	get_h_inter(t_cub *mlx, float angl);
+int	cast_direction_ray(t_cub *mlx, int new_x, int new_y);
 #endif

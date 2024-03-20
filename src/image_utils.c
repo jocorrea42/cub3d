@@ -58,18 +58,22 @@ t_img	*new_file_img(char *path, t_cub *mlx)
 	img = safe_calloc(1, sizeof(t_img));
 	img->img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, path, &img->w,
 			&img->h);
-	if (!img->img_ptr)
+	if (!img->img_ptr){
+		printf("%s\n", path);
 		ft_perror(EINVAL, "Cannot load image");
+	}
 	else
 		img->addr = mlx_get_data_addr(img->img_ptr, &(img->bpp), &(img->l_len),
 				&(img->endian));
+	if (img->h != img->w)
+		ft_perror(EINVAL, "All textures must be squares");
 	if (!mlx->tile)
 	{
 		mlx->tile = (int *)safe_calloc(1, sizeof(int));
-		*mlx->tile = img->w;
+		*mlx->tile = img->h;
 	}
-	if (*mlx->tile > img->w)
-		*mlx->tile = img->w;
+	if (*mlx->tile !=img->h)
+		ft_perror(EINVAL, "All textures must have the same size");
 	return (img);
 }
 

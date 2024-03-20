@@ -28,9 +28,15 @@ void	add_texture(char *tok, char *info, t_cub *mlx)
 	if (!ft_strcmp(tok, "NO") && !mlx->textures->north)
 		mlx->textures->north = new_file_img(tmp, mlx);
 	else if (!ft_strcmp(tok, "SO") && !mlx->textures->south)
+	{
 		mlx->textures->south = new_file_img(tmp, mlx);
+		invert_image_x(mlx->textures->south);
+	}
 	else if (!ft_strcmp(tok, "WE") && !mlx->textures->west)
+	{
 		mlx->textures->west = new_file_img(tmp, mlx);
+		invert_image_x(mlx->textures->west);
+	}
 	else if (!ft_strcmp(tok, "EA") && !mlx->textures->east)
 		mlx->textures->east = new_file_img(tmp, mlx);
 	else

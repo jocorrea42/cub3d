@@ -14,14 +14,11 @@
 
 void	draw_floor_ceiling(t_cub *mlx, int ray, int t_pix, int b_pix)
 {
-	int	i;
-
-	i = b_pix;
-	while (i < S_H)
-		my_mlx_pixel_put(mlx, ray, i++, *mlx->textures->floor);
-	i = -1;
-	while (++i < t_pix)
-		my_mlx_pixel_put(mlx, ray, i, *mlx->textures->ceiling);
+	while (b_pix < S_H)
+		my_mlx_pixel_put(mlx, ray, b_pix++, *mlx->textures->floor);
+	b_pix = -1;
+	while (++b_pix < t_pix)
+		my_mlx_pixel_put(mlx, ray, b_pix, *mlx->textures->ceiling);
 }
 
 t_img	*get_texture(t_cub *mlx)
@@ -33,46 +30,50 @@ t_img	*get_texture(t_cub *mlx)
 			return (mlx->textures->west);
 		return (mlx->textures->east);
 	}
-	else
+	else if (mlx->ray->flag == 1)
 	{
 		if (mlx->ray->ray_angle > 0 && mlx->ray->ray_angle < M_PI)
 			return (mlx->textures->south);
 		else
 			return (mlx->textures->north);
 	}
+	else
+		return (mlx->textures->door);
 }
 
-double	get_x_o(t_cub *mlx, t_img *current_texture)
+double	get_x_o(t_cub *mlx, t_img *c_tx)
 {
 	double	x_o;
 	
 	x_o = mlx->ray->vert_y;
 	if (mlx->ray->flag == 1 )
 		x_o = mlx->ray->horiz_x;
-	return (fmodf(x_o * (current_texture->w / *mlx->tile), current_texture->w));					
+	return (fmodf(x_o * (c_tx->w / *mlx->tile), c_tx->w));					
 }
 
 void	draw_wall(t_cub *mlx, int t_pix, int b_pix, double wall_h)
 {
 	double			x_o;
 	double			y_o;
-	unsigned int	*img_addr;
+	unsigned int	*img;
 	double			factor;
-	t_img			*current_texture;
+	t_img			*c_tx;
 
-	current_texture = get_texture(mlx);
-	img_addr = (unsigned int *)current_texture->addr;
-	x_o = get_x_o(mlx, current_texture);
-	factor = (double)current_texture->h / wall_h;
+	c_tx = get_texture(mlx);
+	img = (unsigned int *)c_tx->addr;
+	x_o = get_x_o(mlx, c_tx);
+	factor = (double)c_tx->h / wall_h;
 	y_o = (t_pix - (S_H / 2) + (wall_h / 2)) * factor;
-	if (y_o < 0)
+	if (isinf(wall_h) || y_o < 0) // SEGFAULT when wall is inf -> wall is only inf when player enters wall...
 		y_o = 0;
 	while (t_pix < b_pix)
 	{
-		my_mlx_pixel_put(mlx, mlx->ray->index, t_pix,
-			(img_addr[(int)y_o * current_texture->w + (int)x_o]));
+/* 		if ((c_tx->dir == 90 || c_tx->dir == 180) && y_o < c_tx->w && x_o < c_tx->h)
+			//if (((int)y_o * c_tx->w) + (int)c_tx->h - 1 - (int)x_o >= 0)
+			my_mlx_pixel_put(mlx, mlx->ray->index, t_pix++, img[((int)y_o * c_tx->w) + (int)c_tx->h - 1 - (int)x_o]);
+		else */
+		my_mlx_pixel_put(mlx, mlx->ray->index, t_pix++, img[(int)y_o * c_tx->w + (int)x_o]);
 		y_o += factor;
-		t_pix++;
 	}
 }
 
@@ -92,7 +93,6 @@ void	render_wall(t_cub *mlx, int ray)
 	if (t_pix < 0)
 		t_pix = 0;
 	mlx->ray->index = ray;
-	if (wall_h > 0)
-		draw_wall(mlx, t_pix, b_pix, wall_h);
+	draw_wall(mlx, t_pix, b_pix, wall_h);
 	draw_floor_ceiling(mlx, ray, t_pix, b_pix);
 }
