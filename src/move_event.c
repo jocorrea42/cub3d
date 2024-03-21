@@ -18,7 +18,7 @@ void	rotate_player(t_player *player)
 
 	rotation = ROTATION_SPEED;
 	if (player->mouse_rot)
-		rotation /= 4;
+		rotation /= 2;
 	if (player->rot == 1)
 	{
 		player->angle += rotation;

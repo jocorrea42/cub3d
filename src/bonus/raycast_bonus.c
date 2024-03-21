@@ -128,17 +128,11 @@ void	cast_rays(t_cub *mlx)
 		h_inter = get_h_inter(mlx, nor_angle(mlx->ray->ray_angle));
 		v_inter = get_v_inter(mlx, nor_angle(mlx->ray->ray_angle));
 		if (v_inter <= h_inter)
-		{
 			mlx->ray->distance = v_inter;
-			if (mlx->ray->vert_hit == 2)
-				mlx->ray->flag = 2;
-		}
 		else
 		{
 			mlx->ray->distance = h_inter;
 			mlx->ray->flag = 1;
-			if (mlx->ray->vert_hit == 2)
-				mlx->ray->flag = 2;
 		}
 		render_wall(mlx, ray);
 		ray++;

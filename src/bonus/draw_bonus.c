@@ -24,13 +24,13 @@ void	draw_floor_ceiling(t_cub *mlx, int ray, int t_pix, int b_pix)
 t_img	*get_texture(t_cub *mlx)
 {
 	mlx->ray->ray_angle = nor_angle(mlx->ray->ray_angle);
-	if (mlx->ray->flag == 0)
+	if (mlx->ray->flag == 0 && mlx->ray->vert_hit != 2)
 	{
 		if (mlx->ray->ray_angle > M_PI_2 && mlx->ray->ray_angle < 3 * M_PI_2)
 			return (mlx->textures->west);
 		return (mlx->textures->east);
 	}
-	else if (mlx->ray->flag == 1)
+	else if (mlx->ray->flag == 1 && mlx->ray->horiz_hit != 2)
 	{
 		if (mlx->ray->ray_angle > 0 && mlx->ray->ray_angle < M_PI)
 			return (mlx->textures->south);
@@ -44,11 +44,12 @@ t_img	*get_texture(t_cub *mlx)
 double	get_x_o(t_cub *mlx, t_img *current_texture)
 {
 	double	x_o;
-	
+
 	x_o = mlx->ray->vert_y;
-	if (mlx->ray->flag == 1 )
+	if (mlx->ray->flag == 1)
 		x_o = mlx->ray->horiz_x;
-	return (fmodf(x_o * (current_texture->w / *mlx->tile), current_texture->w));					
+	return (fmodf(x_o * (current_texture->w / *mlx->tile),
+			current_texture->w));
 }
 
 void	draw_wall(t_cub *mlx, int t_pix, int b_pix, double wall_h)

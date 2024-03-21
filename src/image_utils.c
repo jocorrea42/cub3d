@@ -58,10 +58,8 @@ t_img	*new_file_img(char *path, t_cub *mlx)
 	img = safe_calloc(1, sizeof(t_img));
 	img->img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr, path, &img->w,
 			&img->h);
-	if (!img->img_ptr){
-		printf("%s\n", path);
+	if (!img->img_ptr)
 		ft_perror(EINVAL, "Cannot load image");
-	}
 	else
 		img->addr = mlx_get_data_addr(img->img_ptr, &(img->bpp), &(img->l_len),
 				&(img->endian));

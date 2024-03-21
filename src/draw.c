@@ -45,11 +45,12 @@ t_img	*get_texture(t_cub *mlx)
 double	get_x_o(t_cub *mlx, t_img *current_texture)
 {
 	double	x_o;
-	
+
 	x_o = mlx->ray->vert_y;
-	if (mlx->ray->flag == 1 )
+	if (mlx->ray->flag == 1)
 		x_o = mlx->ray->horiz_x;
-	return (fmodf(x_o * (current_texture->w / *mlx->tile), current_texture->w));					
+	return (fmodf(x_o * (current_texture->w / *mlx->tile),
+			current_texture->w));
 }
 
 void	draw_wall(t_cub *mlx, int t_pix, int b_pix, double wall_h)

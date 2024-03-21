@@ -24,17 +24,18 @@ INC_DIR = inc
 
 # Base source files
 SRC_BASE = image_utils.c key_event.c main.c \
-    move_event.c utils.c init_data.c \
-    win.c ft_perror.c safe_allocation.c read_utils.c \
-    open_utils.c check_map.c ft_strtok.c check_closed.c \
-    clean_utils.c fake_split.c safe_allocation2.c \
-    direction_rays.c invert_image.c
+	move_event.c utils.c init_data.c \
+	win.c ft_perror.c safe_allocation.c read_utils.c \
+	open_utils.c check_map.c ft_strtok.c check_closed.c \
+	clean_utils.c fake_split.c safe_allocation2.c \
+	direction_rays.c invert_image.c
 
 # Mandatory additional source files
 SRC_MAND = init_game.c raycast.c draw.c parse_textures.c
 
 # Bonus source files
-SRC_BONUS = init_game_bonus.c raycast_bonus.c draw_bonus.c parse_textures_bonus.c
+SRC_BONUS = bonus/init_game_bonus.c bonus/raycast_bonus.c bonus/draw_bonus.c \
+	bonus/parse_textures_bonus.c
 
 # Combine base and mandatory source files
 SRC = $(SRC_BASE) $(SRC_MAND)
@@ -50,10 +51,10 @@ DEP_ALL = $(addprefix $(OBJ_DIR)/,$(SRC_ALL:.c=.d))
 
 # Compile SRC files and move to folders
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c cub3d.h keys.h Makefile
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)/$(dir $*)
 	@$(CC) $(CFLAGS) -I. $(MLX_INCLUDE) -Ilibft -O3 -c $< -o $@
-	@mkdir -p $(DEP_DIR)
-	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/
+	@mkdir -p $(DEP_DIR)/$(dir $*)
+	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/$(dir $*)
 
 # Determine OS
 UNAME_S := $(shell uname -s)
