@@ -20,12 +20,13 @@ int	mlx_mouse_show()
   return (0);
 }
 
-int	mlx_mouse_move(mlx_win_list_t *win, int x, int y)
+int	mlx_mouse_move(mlx_ptr_t *mlx_ptr, mlx_win_list_t *win, int x, int y)
 {
   CGPoint	point;
   NSRect	pos;
   id	thewin;
 
+  (void)mlx_ptr;
   thewin = [(id)(win->winid) win];
   pos = [thewin frame];
   //  printf("got win pos %f %f\n", pos.origin.x, pos.origin.y);
