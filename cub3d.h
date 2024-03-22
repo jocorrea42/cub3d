@@ -29,8 +29,8 @@
 # include <fcntl.h>
 # include <errno.h>
 
-# define S_W			1920
-# define S_H			1080
+# define S_W			1280
+# define S_H			720
 # define TILE_SIZE		64
 # define FOV			60
 # define COLLISION_FOV	4
@@ -66,6 +66,7 @@ typedef struct s_player
 	double	angle;
 	float	fov_rd;
 	int		speed;
+	int		door;
 }	t_player;
 
 typedef struct s_ray
@@ -185,4 +186,6 @@ void			print_array(char **arr);
 float	get_v_inter(t_cub *mlx, float angl);
 float	get_h_inter(t_cub *mlx, float angl);
 int	cast_direction_ray(t_cub *mlx, int new_x, int new_y);
+void	cast_door_ray(t_cub *mlx);
+int	check_for_door(t_cub *mlx);
 #endif

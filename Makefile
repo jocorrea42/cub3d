@@ -23,7 +23,7 @@ DEP_DIR = dep
 INC_DIR = inc
 
 # Base source files
-SRC_BASE = image_utils.c key_event.c main.c \
+SRC_BASE = image_utils.c main.c \
 	move_event.c utils.c init_data.c \
 	win.c ft_perror.c safe_allocation.c read_utils.c \
 	open_utils.c check_map.c ft_strtok.c check_closed.c \
@@ -31,11 +31,11 @@ SRC_BASE = image_utils.c key_event.c main.c \
 	direction_rays.c invert_image.c
 
 # Mandatory additional source files
-SRC_MAND = init_game.c raycast.c draw.c parse_textures.c
+SRC_MAND = init_game.c raycast.c draw.c parse_textures.c key_event.c
 
 # Bonus source files
 SRC_BONUS = bonus/init_game_bonus.c bonus/raycast_bonus.c bonus/draw_bonus.c \
-	bonus/parse_textures_bonus.c
+	bonus/parse_textures_bonus.c bonus/key_event_bonus.c bonus/door_rays_bonus.c
 
 # Combine base and mandatory source files
 SRC = $(SRC_BASE) $(SRC_MAND)

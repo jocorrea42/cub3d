@@ -50,8 +50,10 @@ int	wall_hit(float x, float y, t_cub *mlx)
 	{
 		if (mlx->dt->map2d[y_m][x_m] == '1')
 			return (1);
-		if (mlx->dt->map2d[y_m][x_m] == '3')
+		if (mlx->dt->map2d[y_m][x_m] == '2' && mlx->pl->door)
 			return (2);
+		if (mlx->dt->map2d[y_m][x_m] == '3')
+			return (3);
 	}
 	return (0);
 }
@@ -81,7 +83,7 @@ float	get_h_inter(t_cub *mlx, float angl)
 		mlx->ray->horiz_hit = wall_hit(h_x, h_y - pixel, mlx);
 	}
 	mlx->ray->horiz_x = h_x;
-	mlx->ray->horiz_y = h_y;
+	mlx->ray->horiz_y = h_y - pixel;
 	return (sqrt(pow(h_x - mlx->pl->pl_x, 2) + pow(h_y - mlx->pl->pl_y, 2)));
 }
 
@@ -109,7 +111,7 @@ float	get_v_inter(t_cub *mlx, float angl)
 		v_y += y_step;
 		mlx->ray->vert_hit = wall_hit(v_x - pixel, v_y, mlx);
 	}
-	mlx->ray->vert_x = v_x;
+	mlx->ray->vert_x = v_x - pixel;
 	mlx->ray->vert_y = v_y;
 	return (sqrt(pow(v_x - mlx->pl->pl_x, 2) + pow(v_y - mlx->pl->pl_y, 2)));
 }
