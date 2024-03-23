@@ -29,9 +29,8 @@
 # include <fcntl.h>
 # include <errno.h>
 
-# define S_W			1280
+# define S_W			1200
 # define S_H			720
-# define TILE_SIZE		64
 # define FOV			60
 # define COLLISION_FOV	4
 # define ROTATION_SPEED	0.045
@@ -67,7 +66,18 @@ typedef struct s_player
 	float	fov_rd;
 	int		speed;
 	int		door;
+	int		is_near_door;
+	int		potion;
 }	t_player;
+
+typedef struct s_sprite
+{
+	int		size;
+	int		frame;
+	int		h;
+	int		w;
+	void	**sprites;
+}	t_sprite;
 
 typedef struct s_ray
 {
@@ -114,6 +124,7 @@ typedef struct s_tex
 	t_img	*door;
 	int		*floor;
 	int		*ceiling;
+	t_sprite	*potion;
 }	t_tex;
 
 typedef struct s_cub
@@ -188,4 +199,9 @@ float	get_h_inter(t_cub *mlx, float angl);
 int	cast_direction_ray(t_cub *mlx, int new_x, int new_y);
 void	cast_door_ray(t_cub *mlx);
 int	check_for_door(t_cub *mlx);
+
+/* Sprites */
+t_sprite	*new_sprite(t_cub *mlx);
+
+
 #endif

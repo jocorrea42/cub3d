@@ -50,9 +50,11 @@ int	read_keys(int key_pressed, void *param)
 	cub = (t_cub *)param;
 	printf("key: %d\n", key_pressed); // debug function delete
 	move_input(key_pressed, cub);
-	if (key_pressed == E_LINUX) // Create macro for E MAC
+	if (key_pressed == E_LINUX || key_pressed == E_MAC)
 		cub->pl->door = 1;
-	if (key_pressed == 32) // debug function delete 
+	if (key_pressed == 12)
+		cub->pl->potion = 1;
+	if (key_pressed == 32 || key_pressed == 49) // debug function delete 
 		print_map(cub->dt->map2d);
 	if (key_pressed == ESC_LINUX || key_pressed == ESC_MAC)
 		exit_win();

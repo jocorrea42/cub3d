@@ -44,7 +44,7 @@ int	wall_hit(float x, float y, t_cub *mlx)
 		return (1);
 	x_m = floor(x / *mlx->tile);
 	y_m = floor(y / *mlx->tile);
-	if ((y_m >= mlx->dt->h_map || x_m >= mlx->dt->w_map))
+	if (y_m >= mlx->dt->h_map || x_m >= mlx->dt->w_map || x_m < 0 || y_m < 0)
 		return (1);
 	if (mlx->dt->map2d[y_m] && x_m <= (int)ft_strlen(mlx->dt->map2d[y_m]))
 	{

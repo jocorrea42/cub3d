@@ -35,7 +35,8 @@ SRC_MAND = init_game.c raycast.c draw.c parse_textures.c key_event.c
 
 # Bonus source files
 SRC_BONUS = bonus/init_game_bonus.c bonus/raycast_bonus.c bonus/draw_bonus.c \
-	bonus/parse_textures_bonus.c bonus/key_event_bonus.c bonus/door_rays_bonus.c
+	bonus/parse_textures_bonus.c bonus/key_event_bonus.c bonus/door_rays_bonus.c \
+	bonus/sprite_utils_bonus.c
 
 # Combine base and mandatory source files
 SRC = $(SRC_BASE) $(SRC_MAND)
@@ -52,7 +53,7 @@ DEP_ALL = $(addprefix $(OBJ_DIR)/,$(SRC_ALL:.c=.d))
 # Compile SRC files and move to folders
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c cub3d.h keys.h Makefile
 	@mkdir -p $(OBJ_DIR)/$(dir $*)
-	@$(CC) $(CFLAGS) -I. $(MLX_INCLUDE) -Ilibft -O3 -c $< -o $@
+	@$(CC) $(CFLAGS) -I. $(MLX_INCLUDE) -Ilibft -c $< -o $@
 	@mkdir -p $(DEP_DIR)/$(dir $*)
 	@mv $(OBJ_DIR)/$*.d $(DEP_DIR)/$(dir $*)
 
