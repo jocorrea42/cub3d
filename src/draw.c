@@ -53,55 +53,6 @@ double	get_x_o(t_cub *mlx, t_img *current_texture)
 			current_texture->w));
 }
 
-void minimap(t_cub *mlx)
-{
-	int i;
-	int j;
-	double factor_x;
-	double factor_y;
-	int x_m;
-	int x_p;
-	int y_m;
-	int y_p;
-	int tile_x;
-	int tile_y;
-
-
-	tile_x =  mlx->dt->h_map * 10;
-	tile_y = mlx->dt->w_map *10;
-	factor_x = tile_x / (mlx->dt->h_map);
-	factor_y = tile_y / (mlx->dt->w_map);
-	y_p = mlx->pl->pl_x / *mlx->tile;
-	x_p = mlx->pl->pl_y / *mlx->tile;
-	if ( mlx->dt->map2d[x_p][y_p] == '1')
-	{
-		x_p = mlx->old_x;
-		y_p = mlx->old_y;
-	}
-	else
-	{
-		mlx->old_x = x_p;
-		mlx->old_y = y_p;
-	}
-//	printf("x_m=%d, y_m=%d\n", x_m, y_m);
-	i = -1;
-	while (++i < tile_x)
-	{
-		j = -1;
-		while (++j < tile_y)
-		{
-			x_m = (i  / factor_x);
-			y_m = (j / factor_y);
-			if (x_m == x_p && y_m == y_p)
-				my_mlx_pixel_put(mlx, j, i, 0xFFFFFF + (int)(mlx->pl->angle));
-			else if (x_m < mlx->dt->h_map && y_m < mlx->dt->w_map && mlx->dt->map2d[x_m][y_m] == '1')
-				my_mlx_pixel_put(mlx, j, i, 0xFF0000);
-			else
-				my_mlx_pixel_put(mlx, j, i, 0);
-		}
-	}
-}
-
 void	draw_wall(t_cub *mlx, int t_pix, int b_pix, double wall_h)
 {
 	double			x_o;

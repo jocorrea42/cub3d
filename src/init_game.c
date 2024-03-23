@@ -16,7 +16,6 @@ void	draw_image(t_cub *mlx)
 {
 	hook(mlx);
 	cast_rays(mlx);
-	minimap(mlx);
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr,
 		mlx->img->img_ptr, 0, 0);
 }

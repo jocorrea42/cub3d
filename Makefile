@@ -36,7 +36,7 @@ SRC_MAND = init_game.c raycast.c draw.c parse_textures.c key_event.c
 # Bonus source files
 SRC_BONUS = bonus/init_game_bonus.c bonus/raycast_bonus.c bonus/draw_bonus.c \
 	bonus/parse_textures_bonus.c bonus/key_event_bonus.c bonus/door_rays_bonus.c \
-	bonus/sprite_utils_bonus.c
+	bonus/sprite_utils_bonus.c bonus/minimap_bonus.c
 
 # Combine base and mandatory source files
 SRC = $(SRC_BASE) $(SRC_MAND)

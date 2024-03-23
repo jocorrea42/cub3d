@@ -53,6 +53,8 @@ void	add_color(char *tok, char *info, t_cub *mlx)
 		mlx->textures->ceiling = create_new_color(info);
 	else if (!ft_strcmp(tok, "F") && !mlx->textures->floor)
 		mlx->textures->floor = create_new_color(info);
+	else
+		ft_perror(EINVAL, "Color already set");
 }
 
 void	check_texture_input(char *line, t_cub *mlx)

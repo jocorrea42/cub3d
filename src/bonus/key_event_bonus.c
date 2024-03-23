@@ -31,9 +31,9 @@ void	move_input(int key_pressed, t_cub *cub)
 		cub->pl->rot = 1;
 }
 
-void print_map(char **map) // debug function delete
+void	print_map(char **map) // debug function delete
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (map[i])
