@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   image_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anyela <anyela@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 09:47:19 by anyela            #+#    #+#             */
-/*   Updated: 2024/02/28 09:50:00 by anyela           ###   ########.fr       */
+/*   Updated: 2024/03/23 17:22:05 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,3 @@ t_img	*new_file_img(char *path, t_cub *mlx)
 		ft_perror(EINVAL, "All textures must have the same size");
 	return (img);
 }
-
-/* unsigned int	get_pixel_img(t_img img, int x, int y)
-{
-	return (*(unsigned int *)((img.addr + (y * img.l_len) + (x * img.bpp / 8))));
-} */

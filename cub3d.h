@@ -6,7 +6,7 @@
 /*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:13:53 by jocorrea          #+#    #+#             */
-/*   Updated: 2024/03/16 14:04:58 by jocorrea         ###   ########.fr       */
+/*   Updated: 2024/03/23 16:42:04 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,8 @@ typedef struct s_cub
 	t_data		*dt;
 	t_player	*pl;
 	t_tex		*textures;
+	int			old_x;
+	int			old_y;
 	int			*tile;
 	int			hrz;
 }	t_cub;
@@ -150,6 +152,7 @@ typedef struct s_square
 
 t_img			*new_program(t_cub *mlx);
 void			my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
+void			my_img_mlx_pixel_put(t_img *img, int x, int y, int color);
 void			cast_rays(t_cub *mlx);
 void			render_wall(t_cub *mlx, int ray);
 float			nor_angle(float angle);
@@ -202,6 +205,6 @@ int	check_for_door(t_cub *mlx);
 
 /* Sprites */
 t_sprite	*new_sprite(t_cub *mlx);
-
+void minimap(t_cub *mlx);
 
 #endif

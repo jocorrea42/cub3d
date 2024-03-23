@@ -6,7 +6,7 @@
 /*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 10:01:55 by anyela            #+#    #+#             */
-/*   Updated: 2024/03/16 14:07:33 by jocorrea         ###   ########.fr       */
+/*   Updated: 2024/03/23 15:20:38 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	draw_image(t_cub *mlx)
 {
 	hook(mlx);
 	cast_rays(mlx);
+	minimap(mlx);
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr,
 		mlx->img->img_ptr, 0, 0);
 }

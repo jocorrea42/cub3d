@@ -6,7 +6,7 @@
 /*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 13:43:53 by jocorrea          #+#    #+#             */
-/*   Updated: 2024/03/16 13:15:53 by jocorrea         ###   ########.fr       */
+/*   Updated: 2024/03/23 15:03:59 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,17 @@ void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color) // put the pixel
 	if (x >= 0 && y >= 0 && x < cub->img->w && y < cub->img->h)
 	{
 		dst = cub->img->addr + (y * cub->img->l_len + x * (cub->img->bpp / 8));
+		*(unsigned int *)dst = color;
+	}
+}
+
+void	my_img_mlx_pixel_put(t_img *img, int x, int y, int color) // put the pixel
+{
+	char	*dst;
+
+	if (x >= 0 && y >= 0 && x < img->w && y < img->h)
+	{
+		dst = img->addr + (y * img->l_len + x * (img->bpp / 8));
 		*(unsigned int *)dst = color;
 	}
 }
