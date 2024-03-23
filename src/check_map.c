@@ -36,22 +36,22 @@ void	create_square_map(char **tmp, t_data *dt)
 	}
 }
 
-void	add_to_count(char c, t_data *data, int i, int j)
+void	add_to_count(t_data *data, int i, int j)
 {
-	if (c != '0' && c != '1' && c != ' ')
-	{
-		data->p_x = j;
-		data->p_y = i;
-		data->n_p += 1;
-		if (c == 'N')
-			data->p_a = N;
-		else if (c == 'S')
-			data->p_a = S;
-		else if (c == 'W')
-			data->p_a = W;
-		else if (c == 'E')
-			data->p_a = E;
-	}
+	if (data->map2d[i][j] == 'N')
+		data->p_a = N;
+	else if (data->map2d[i][j] == 'S')
+		data->p_a = S;
+	else if (data->map2d[i][j] == 'W')
+		data->p_a = W;
+	else if (data->map2d[i][j] == 'E')
+		data->p_a = E;
+	else
+		return ;
+	data->p_x = j;
+	data->p_y = i;
+	data->n_p += 1;
+	data->map2d[i][j] = '0';
 }
 
 int	check_char(char c)
@@ -81,7 +81,7 @@ void	check_valid_char(t_data *data)
 		{
 			if (check_char(data->map2d[i][j]))
 				ft_perror(EINVAL, "Char not allowed");
-			add_to_count(data->map2d[i][j], data, i, j);
+			add_to_count(data, i, j);
 			j++;
 		}
 		i++;

@@ -15,7 +15,7 @@
 int	is_textures_ok(t_tex *tex)
 {
 	return (tex->ceiling && tex->floor && tex->north && tex->south && tex->west
-		&& tex->east);
+		&& tex->east && tex->door);
 }
 
 void	add_texture(char *tok, char *info, t_cub *mlx)
@@ -39,6 +39,8 @@ void	add_texture(char *tok, char *info, t_cub *mlx)
 	}
 	else if (!ft_strcmp(tok, "EA") && !mlx->textures->east)
 		mlx->textures->east = new_file_img(tmp, mlx);
+	else if (!ft_strcmp(tok, "D") && !mlx->textures->door)
+		mlx->textures->door = new_file_img(tmp, mlx);
 	else
 		ft_perror(EINVAL, "Invalid texture - Wrong identifier");
 	if (ft_strtok(NULL, " "))

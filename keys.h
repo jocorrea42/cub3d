@@ -21,6 +21,7 @@
 # define S_LINUX 115
 # define A_LINUX 97
 # define D_LINUX 100
+# define E_LINUX 101
 # define ESC_LINUX 65307
 
 # define UP_MAC 126
@@ -31,6 +32,7 @@
 # define S_MAC 1
 # define A_MAC 0
 # define D_MAC 2
+# define E_MAC 14
 # define ESC_MAC 53
 
 #endif

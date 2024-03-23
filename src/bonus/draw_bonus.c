@@ -14,32 +14,31 @@
 
 void	draw_floor_ceiling(t_cub *mlx, int ray, int t_pix, int b_pix)
 {
-	int	i;
-
-	i = b_pix;
-	while (i < S_H)
-		my_mlx_pixel_put(mlx, ray, i++, *mlx->textures->floor);
-	i = -1;
-	while (++i < t_pix)
-		my_mlx_pixel_put(mlx, ray, i, *mlx->textures->ceiling);
+	while (b_pix < S_H)
+		my_mlx_pixel_put(mlx, ray, b_pix++, *mlx->textures->floor);
+	b_pix = -1;
+	while (++b_pix < t_pix)
+		my_mlx_pixel_put(mlx, ray, b_pix, *mlx->textures->ceiling);
 }
 
 t_img	*get_texture(t_cub *mlx)
 {
 	mlx->ray->ray_angle = nor_angle(mlx->ray->ray_angle);
-	if (mlx->ray->flag == 0)
+	if (mlx->ray->flag == 0 && mlx->ray->vert_hit == 1)
 	{
 		if (mlx->ray->ray_angle > M_PI_2 && mlx->ray->ray_angle < 3 * M_PI_2)
 			return (mlx->textures->west);
 		return (mlx->textures->east);
 	}
-	else
+	else if (mlx->ray->flag == 1 && mlx->ray->horiz_hit == 1)
 	{
 		if (mlx->ray->ray_angle > 0 && mlx->ray->ray_angle < M_PI)
 			return (mlx->textures->south);
 		else
 			return (mlx->textures->north);
 	}
+	else
+		return (mlx->textures->door);
 }
 
 double	get_x_o(t_cub *mlx, t_img *current_texture)

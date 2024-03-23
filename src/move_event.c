@@ -14,19 +14,25 @@
 
 void	rotate_player(t_player *player)
 {
+	double	rotation;
+
+	rotation = ROTATION_SPEED;
+	if (player->mouse_rot)
+		rotation /= 2;
 	if (player->rot == 1)
 	{
-		player->angle += ROTATION_SPEED;
+		player->angle += rotation;
 		if (player->angle > 2 * M_PI)
 			player->angle -= 2 * M_PI;
 	}
 	else
 	{
-		player->angle -= ROTATION_SPEED;
+		player->angle -= rotation;
 		if (player->angle < 0)
 			player->angle += 2 * M_PI;
 	}
 	player->rot = 0;
+	player->mouse_rot = 0;
 }
 
 void	general_move_player(t_cub *mlx)
@@ -53,11 +59,7 @@ void	move_player(t_cub *mlx, double move_x, double move_y)
 
 	new_x = roundf(mlx->pl->pl_x + move_x);
 	new_y = roundf(mlx->pl->pl_y + move_y);
-	if (mlx->dt->map2d[new_y / *mlx->tile][new_x / *mlx->tile] != '1'
-		&& (mlx->dt->map2d[new_y / *mlx->tile]
-		[mlx->pl->pl_x / *mlx->tile] != '1'
-		&& mlx->dt->map2d[mlx->pl->pl_y / *mlx->tile]
-		[new_x / *mlx->tile] != '1'))
+	if (cast_direction_ray(mlx, new_x, new_y))
 	{
 		mlx->pl->pl_x = new_x;
 		mlx->pl->pl_y = new_y;
