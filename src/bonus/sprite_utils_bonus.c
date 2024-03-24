@@ -35,5 +35,6 @@ t_sprite	*new_sprite(t_cub *mlx)
 		|| !img->sprites[3] || !img->sprites[4] || !img->sprites[5])
 		ft_perror(ENOMEM, "Failed load image");
 	img->size = 5;
+	img->frame = 0;
 	return (img);
 }

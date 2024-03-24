@@ -16,6 +16,7 @@ int	main(int argc, char **argv)
 {
 	t_cub	mlx;
 
+	ft_bzero(&mlx, sizeof(t_cub));
 	if (argc != 2)
 		ft_perror(EINVAL, "./cub3d [MAP.cub]");
 	init_structs(&mlx);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_textures.c                                   :+:      :+:    :+:   */
+/*   parse_textures_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 10:19:30 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/03/16 10:19:31 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/03/24 17:48:54 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,14 @@ void	check_texture_input(char *line, t_cub *mlx)
 	else
 		add_texture(tok, ft_strtok(NULL, "\0"), mlx);
 	free(line);
+}
+
+void	modify_pass(int *pass)
+{
+	if (*pass == 0)
+		*pass = 10;
+	else if (*pass == 10)
+		*pass = 20;
+	else
+		*pass = 0;
 }

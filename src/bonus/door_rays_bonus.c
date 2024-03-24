@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   direction_rays.c                                   :+:      :+:    :+:   */
+/*   door_rays_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 10:58:15 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/03/21 10:58:19 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2024/03/24 17:52:12 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	is_it_close(t_player *pl, int new_x, int new_y, int tile)
 
 	distance = sqrt(pow(pl->pl_x - new_x, 2)
 			+ pow(pl->pl_y - new_y, 2));
-	if ((int)distance < tile)
+	if ((int)distance < tile * 2)
 		return (1);
 	return (0);
 }
@@ -78,5 +78,17 @@ int	check_for_door(t_cub *mlx)
 		return (mlx->ray->horiz_hit);
 	}
 	mlx->pl->door = 0;
+	return (0);
+}
+
+int	mouse_click(int button, int x, int y, void *param)
+{
+	t_player	*pl;
+
+	(void)button;
+	(void)x;
+	(void)y;
+	pl = (t_player *) param;
+	pl->shoot = 1;
 	return (0);
 }

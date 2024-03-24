@@ -6,7 +6,7 @@
 /*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:13:53 by jocorrea          #+#    #+#             */
-/*   Updated: 2024/03/24 17:36:28 by jocorrea         ###   ########.fr       */
+/*   Updated: 2024/03/24 17:56:21 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 # include <fcntl.h>
 # include <errno.h>
 
-# define S_W			1200
-# define S_H			720
+# define S_W			1800
+# define S_H			1200
 # define FOV			60
 # define COLLISION_FOV	4
 # define ROTATION_SPEED	0.045
@@ -93,10 +93,10 @@ typedef struct s_ray
 	int		vert_hit;
 }	t_ray;
 
-typedef struct	s_mini
+typedef struct s_mini
 {
-	double factor_x;
-	double factor_y;
+	double	factor_x;
+	double	factor_y;
 	int		x;
 	int		x_p;
 	int		y;
@@ -106,7 +106,6 @@ typedef struct	s_mini
 	int		i;
 	int		j;
 }			t_mini;
-
 
 typedef struct s_data
 {
@@ -132,15 +131,15 @@ typedef struct s_img
 
 typedef struct s_tex
 {
-	t_img	*north;
-	t_img	*south;
-	t_img	*west;
-	t_img	*east;
-	t_img	*door;
-	int		*floor;
-	int		*ceiling;
+	t_img		*north;
+	t_img		*south;
+	t_img		*west;
+	t_img		*east;
+	t_img		*door;
+	int			*floor;
+	int			*ceiling;
 	t_sprite	*sprite;
-}	t_tex;
+}				t_tex;
 
 typedef struct s_cub
 {
@@ -214,14 +213,18 @@ int				ft_strcmp(char *str1, char *str2);
 void			clean_array(void *array);
 void			print_array(char **arr);
 
-float	get_v_inter(t_cub *mlx, float angl);
-float	get_h_inter(t_cub *mlx, float angl);
-int	cast_direction_ray(t_cub *mlx, int new_x, int new_y);
-void	cast_door_ray(t_cub *mlx);
-int	check_for_door(t_cub *mlx);
+float			get_v_inter(t_cub *mlx, float angl);
+float			get_h_inter(t_cub *mlx, float angl);
+int				cast_direction_ray(t_cub *mlx, int new_x, int new_y);
+void			cast_door_ray(t_cub *mlx);
+int				check_for_door(t_cub *mlx);
 
 /* Sprites */
-t_sprite	*new_sprite(t_cub *mlx);
-void minimap(t_cub *mlx);
+t_sprite		*new_sprite(t_cub *mlx);
+void			minimap(t_cub *mlx);
+int				mouse_move(int x, int y, void *param);
+void			centered_string(void *mlx, void *win, int color, char *string);
+int				mouse_click(int button, int x, int y, void *param);
+void			modify_pass(int *pass);
 
 #endif

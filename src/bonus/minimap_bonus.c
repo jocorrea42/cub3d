@@ -6,7 +6,7 @@
 /*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:55:44 by lsulzbac          #+#    #+#             */
-/*   Updated: 2024/03/24 17:31:38 by jocorrea         ###   ########.fr       */
+/*   Updated: 2024/03/24 17:42:33 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,31 @@ void	minimap(t_cub *mlx)
 		mlx->old_y = mlx->mp.y_p;
 	}
 	minidraw(mlx);
+}
+
+int	mouse_move(int x, int y, void *param)
+{
+	t_cub	*mlx;
+
+	(void)y;
+	mlx = (t_cub *) param;
+	if (x > S_W / 2)
+		mlx->pl->rot = 1;
+	else if (x < S_W / 2)
+		mlx->pl->rot = -1;
+	mlx->pl->mouse_rot = 1;
+	mlx_mouse_move(mlx->mlx_ptr, mlx->win_ptr, S_W / 2, S_H / 2);
+	return (0);
+}
+
+void	centered_string(void *mlx, void *win, int color, char *string)
+{
+	int	size;
+	int	x;
+	int	y;
+
+	size = ft_strlen(string);
+	x = S_W / 2 - (size / 2) * 10;
+	y = S_H - S_H / 8;
+	mlx_string_put(mlx, win, x, y, color, string);
 }

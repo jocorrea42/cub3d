@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   key_event.c                                        :+:      :+:    :+:   */
+/*   key_event_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 09:47:19 by anyela            #+#    #+#             */
-/*   Updated: 2024/03/16 14:08:37 by jocorrea         ###   ########.fr       */
+/*   Updated: 2024/03/24 17:39:21 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,6 @@ void	move_input(int key_pressed, t_cub *cub)
 		cub->pl->rot = 1;
 }
 
-void	print_map(char **map) // debug function delete
-{
-	int	i;
-
-	i = 0;
-	while (map[i])
-	{
-		printf("%s\n", map[i]);
-		i++;
-	}
-}
-
 int	read_keys(int key_pressed, void *param)
 {
 	t_cub	*cub;
@@ -51,8 +39,6 @@ int	read_keys(int key_pressed, void *param)
 	move_input(key_pressed, cub);
 	if (key_pressed == E_LINUX || key_pressed == E_MAC)
 		cub->pl->door = 1;
-	if (key_pressed == 32 || key_pressed == 49) // debug function delete 
-		print_map(cub->dt->map2d);
 	if (key_pressed == ESC_LINUX || key_pressed == ESC_MAC)
 		exit_win();
 	return (0);

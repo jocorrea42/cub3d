@@ -6,7 +6,7 @@
 /*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 13:43:53 by jocorrea          #+#    #+#             */
-/*   Updated: 2024/03/23 15:03:59 by jocorrea         ###   ########.fr       */
+/*   Updated: 2024/03/24 17:53:39 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_img	*new_program(t_cub *mlx)
 	return (img);
 }
 
-void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color) // put the pixel
+void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color)
 {
 	char	*dst;
 
@@ -39,7 +39,7 @@ void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color) // put the pixel
 	}
 }
 
-void	my_img_mlx_pixel_put(t_img *img, int x, int y, int color) // put the pixel
+void	my_img_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
