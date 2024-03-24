@@ -6,7 +6,7 @@
 /*   By: jocorrea <jocorrea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:13:53 by jocorrea          #+#    #+#             */
-/*   Updated: 2024/03/23 16:42:04 by jocorrea         ###   ########.fr       */
+/*   Updated: 2024/03/24 17:36:28 by jocorrea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,21 @@ typedef struct s_ray
 	int		vert_hit;
 }	t_ray;
 
+typedef struct	s_mini
+{
+	double factor_x;
+	double factor_y;
+	int		x;
+	int		x_p;
+	int		y;
+	int		y_p;
+	int		tile_x;
+	int		tile_y;
+	int		i;
+	int		j;
+}			t_mini;
+
+
 typedef struct s_data
 {
 	int		p_x;
@@ -141,6 +156,7 @@ typedef struct s_cub
 	int			*tile;
 	int			hrz;
 	int			random_pass;
+	t_mini		mp;
 }	t_cub;
 
 typedef struct s_square
