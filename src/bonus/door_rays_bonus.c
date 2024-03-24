@@ -63,7 +63,6 @@ int	check_for_door(t_cub *mlx)
 
 	mlx->ray->flag = 0;
 	mlx->pl->door = 1;
-	printf("Checking door...\n");
 	h_inter = get_h_inter(mlx, nor_angle(mlx->pl->angle));
 	v_inter = get_v_inter(mlx, nor_angle(mlx->pl->angle));
 	if (v_inter <= h_inter
@@ -78,7 +77,6 @@ int	check_for_door(t_cub *mlx)
 	{
 		return (mlx->ray->horiz_hit);
 	}
-	printf("Not found\n");
 	mlx->pl->door = 0;
 	return (0);
 }

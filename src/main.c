@@ -16,7 +16,6 @@ int	main(int argc, char **argv)
 {
 	t_cub	mlx;
 
-	printf("%s\n", VALID_CHAR);
 	if (argc != 2)
 		ft_perror(EINVAL, "./cub3d [MAP.cub]");
 	init_structs(&mlx);

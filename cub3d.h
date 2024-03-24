@@ -67,7 +67,7 @@ typedef struct s_player
 	int		speed;
 	int		door;
 	int		is_near_door;
-	int		potion;
+	int		shoot;
 }	t_player;
 
 typedef struct s_sprite
@@ -124,7 +124,7 @@ typedef struct s_tex
 	t_img	*door;
 	int		*floor;
 	int		*ceiling;
-	t_sprite	*potion;
+	t_sprite	*sprite;
 }	t_tex;
 
 typedef struct s_cub
@@ -140,6 +140,7 @@ typedef struct s_cub
 	int			old_y;
 	int			*tile;
 	int			hrz;
+	int			random_pass;
 }	t_cub;
 
 typedef struct s_square

@@ -27,15 +27,6 @@ int	mouse_move(int x, int y, void *param)
 	return (0);
 }
 
-void	draw_potion(void *mlx, void *win, t_sprite *potion, int *key)
-{
-	potion->frame = (potion->frame + 1) % 8;
-	if (*key == 1)
-		mlx_put_image_to_window(mlx, win,
-			potion->sprites[potion->frame], S_W / 2, S_H / 2);
-	*key = 0;
-}
-
 void	centered_string(void *mlx, void *win, int color, char *string)
 {
 	int	size;
@@ -48,14 +39,14 @@ void	centered_string(void *mlx, void *win, int color, char *string)
 	mlx_string_put(mlx, win, x, y, color, string);
 }
 
-void	draw_image(t_cub *mlx)
+void	draw_main_img(t_cub *mlx, int frame, int random_pass)
 {
-	hook(mlx);
-	cast_rays(mlx);
-	minimap(mlx);
+	mlx_clear_window(mlx->mlx_ptr, mlx->win_ptr);
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr,
 		mlx->img->img_ptr, 0, 0);
-	mlx->pl->is_near_door = check_for_door(mlx);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr,
+		mlx->textures->sprite->sprites[frame], S_W / 2 + (S_W / 6 - random_pass),
+		S_H - mlx->textures->sprite->h + 10);
 	if (mlx->pl->is_near_door == 2)
 		centered_string(mlx->mlx_ptr, mlx->win_ptr,
 			0xFFFFFF, "Press 'E' to close door");
@@ -64,45 +55,85 @@ void	draw_image(t_cub *mlx)
 			0xFFFFFF, "Press 'E' to open door");
 }
 
+void	draw_shoot_animation(t_cub *mlx, int random_pass)
+{
+	int	i;
+	i = 0;
+	if (mlx->pl->shoot == mlx->textures->sprite->size)
+		mlx->pl->shoot = 0;
+	draw_main_img(mlx, mlx->pl->shoot, random_pass);
+	usleep(30000);
+	if (mlx->pl->shoot)
+		mlx->pl->shoot += 1;
+	else
+	{
+		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr,
+		mlx->textures->sprite->sprites[mlx->textures->sprite->size], S_W / 2,
+		S_H / 2);
+	}
+}
+
+
+void	draw_image(t_cub *mlx)
+{
+	hook(mlx);
+	cast_rays(mlx);
+	minimap(mlx);
+	mlx->pl->is_near_door = check_for_door(mlx);
+	if (mlx->pl->shoot)
+		draw_shoot_animation(mlx, mlx->random_pass);
+	else
+		draw_main_img(mlx, 0, mlx->random_pass);
+}
+
+void	modify_pass(int *pass)
+{
+	if (*pass == 0)
+		*pass = 10;
+	else if (*pass == 10)
+		*pass = 20;
+	else
+		*pass = 0;
+}
+
 int	game_loop(void *ml)
 {
 	t_cub	*mlx;
 
 	mlx = ml;
+	if (mlx->pl->direction)
+		modify_pass(&mlx->random_pass);
 	if (mlx->pl->direction != NONE || mlx->pl->rot
 		|| (mlx->pl->door && mlx->pl->is_near_door >= 2)
-		|| mlx->pl->potion == -1)
+		|| mlx->pl->shoot)
 		draw_image(mlx);
-	if (mlx->pl->potion)
-		draw_potion(mlx->mlx_ptr, mlx->win_ptr,
-			mlx->textures->potion, &mlx->pl->potion);
 	mlx->pl->door = 0;
 	return (0);
 }
 
-int	key_release(int key, void *param)
+int	mouse_click(int button, int x, int y, void *param)
 {
-	t_player	*pl;
+	(void)button;
+	(void)x;
+	(void)y;
+	t_player *pl;
 
-	printf("key release: %d\n", key);
-	if (key != 12)
-		return (0);
-	pl = (t_player *)param;
-	pl->potion = -1;
+	pl = (t_player *) param;
+	pl->shoot = 1;
 	return (0);
 }
 
 void	start_the_game(t_cub *mlx)
 {
-	mlx->textures->potion = new_sprite(mlx);
+	mlx->textures->sprite = new_sprite(mlx);
 	draw_image(mlx);
 	mlx_mouse_hide(mlx->mlx_ptr, mlx->win_ptr);
 	mlx_mouse_move(mlx->mlx_ptr, mlx->win_ptr, S_W / 2, S_H / 2);
 	mlx_loop_hook(mlx->mlx_ptr, &game_loop, mlx);
+	mlx_mouse_hook(mlx->win_ptr, mouse_click, mlx->pl);
 	mlx_hook(mlx->win_ptr, 2, 1L << 0, read_keys, mlx);
 	mlx_hook(mlx->win_ptr, 17, 0, exit_win, mlx->img);
 	mlx_hook(mlx->win_ptr, 6, 1L << 6, mouse_move, mlx);
-	mlx_hook(mlx->win_ptr, 3, 1L << 1, key_release, mlx->pl);
 	mlx_loop(mlx->mlx_ptr);
 	ft_exit(mlx);
 }
