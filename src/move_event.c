@@ -65,20 +65,3 @@ void	move_player(t_cub *mlx, double move_x, double move_y)
 		mlx->pl->pl_y = new_y;
 	}
 }
-
-void	ft_exit(t_cub *mlx)
-{
-	int	i;
-
-	i = 0;
-	while (mlx->dt->map2d[i])
-		free(mlx->dt->map2d[i++]);
-	free(mlx->dt->map2d);
-	free(mlx->dt);
-	free(mlx->pl);
-	free(mlx->ray);
-	mlx_destroy_image(mlx->mlx_ptr, mlx->img->img_ptr);
-	mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
-	printf("Game closed\n");
-	exit(0);
-}

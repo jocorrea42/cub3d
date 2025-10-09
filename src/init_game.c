@@ -37,5 +37,4 @@ void	start_the_game(t_cub *mlx)
 	mlx_hook(mlx->win_ptr, 2, 1L << 0, read_keys, mlx);
 	mlx_hook(mlx->win_ptr, 17, 0, exit_win, mlx->img);
 	mlx_loop(mlx->mlx_ptr);
-	ft_exit(mlx);
 }

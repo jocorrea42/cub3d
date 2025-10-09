@@ -175,7 +175,6 @@ float			nor_angle(float angle);
 int				unit_circle(float angle, char c);
 void			hook(t_cub *mlx);
 int				read_keys(int key_pressed, void *param);
-void			ft_exit(t_cub *mlx);
 int				exit_win(void);
 void			move_player(t_cub *mlx, double move_x, double move_y);
 void			rotate_player(t_player *player);
